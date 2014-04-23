@@ -1,17 +1,30 @@
 <html>
     <head>
-        <script src="http://simplewebrtc.com/latest.js"></script> 
-        <script src="/videoRemote.js"></script>
-        <style>
-            #remoteVideos video {
-                height: 150px;
-            }
-            #localVideo {
-                height: 150px;
-            }
-        </style>
+      <!--<script src="http://simplewebrtc.com/latest.js"></script> 
+      <script src="/videoSend.js"></script>-->
+      <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;user-scalable=no" >
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+      <script src="/lib/socket.io.js"></script>
+      <script src="/js/client.js"></script>
+      <link rel="stylesheet" href="/css/style.css"/>
     </head>
     <body>
-        <div id="remoteVideos"></div>
+      <div id="movement">
+      <button class="direction" onclick="direction('north')">North</button>
+      <button class="direction" onclick="direction('east')">East</button>
+      <button class="direction" onclick="direction('south')">South</button>
+      <button class="direction" onclick="direction('west')">West</button>
+      </div>
+      <div>
+      <button id="stop" class="direction" onclick="direction('stop')">Stop</button>
+      <div>
+      <button class="speed" onclick="speed('G')">Slowest</button>
+      <button class="speed" onclick="speed('C')">Slow</button>
+      <button class="speed" onclick="speed('M')">Fast</button>
+      <button class="speed" onclick="speed('S')">Fastest</button>
+      <div>
+      <button onclick="dest('dec')">dec</button>
+      <button onclick="dest('go')">go</button>
     </body>
 </html>
