@@ -19,28 +19,17 @@ app.listen(port, function() {
 	console.log("Listening on " + port);
 });
  
-var tmovement = {
-  north: function () { console.log(':Mn#'); },
-  east:  function () { console.log(':Me#'); },
-  south: function () { console.log(':Ms#'); },
-  west:  function () { console.log(':Mw#'); },
-  stop:  function () { console.log(':Q#'); }
- // test: function () { console.log('HELLOWORLD');}
-};
-var tspeed = {
-  G: function () { console.log(':RG#'); },
-  C: function () { console.log(':RC#'); },
-  M: function () { console.log(':RM#'); },
-  S: function () { console.log(':RS#'); }
-};
+function smovement(tmovement) { socket.emit('tmove',tmovement); }
+
+function sspeed(tspeed = { socket.emit('tspeed',tspeed); }
 
 io.sockets.on('connection', function(socket) {
   
   socket.on('direction', function(direction) {
-    tmovement[direction]();
+    smovement(direction);
   });
   socket.on('speed', function(speed) {
-    tspeed[speed]();
+    sspeed(speed);
   });
   socket.on('test', function(data) {
     console.log(data);

@@ -1,8 +1,4 @@
 var 
-  express = require('express'),
-  app = express(),
-  server = require('http').createServer(app),
-  io = require('socket.io').listen(5000),
   serialport = require("serialport"),
   SerialPort = serialport.SerialPort, // localize object constructor
   fs = require('fs');
@@ -16,22 +12,7 @@ var serial = new SerialPort(portName, {
   stopBits: 1, 
   flowControl: false 
 });
-  
-var lightOn = false;
 
-app.configure(function(){
-  app.use(express.static(__dirname + '/public'));
-  app.use(express.static(__dirname + '/assets'));
-});
-  
-app.get('/', function(req, res){
-  res.sendfile(__dirname + '/index.html');
-})
-  
-var port = 3000;
-app.listen(port, function() {
-	console.log("Listening on " + port);
-});
  
 function serial_start() {
   serial.on("open", function () {
@@ -58,18 +39,15 @@ var dest = {
   go: function () { serial.write(':MA#'); }
 };
 
-io.sockets.on('connection', function(socket) {
+var socketIO = require('socket.io-client');
+var socket = socketIO.connect('http://nodeplayscar.herokuapp.com/');
   
-  socket.on('direction', function(direction) {
+  socket.on('tmovement', function(direction) {
     tdirection[direction]();
   });
-  socket.on('speed', function(speed) {
+  socket.on('tspeed', function(speed) {
     tspeed[speed]();
-  });
-  socket.on('destinaton', function(data) {
-    dest[data];
   });
   socket.on('test', function(data) {
     console.log(data);
   });
-});
