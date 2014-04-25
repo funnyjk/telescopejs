@@ -11,7 +11,7 @@ app.configure(function(){
 });
   
 app.get('/', function(req, res){
-  res.sendfile(__dirname + '/website.html');
+  res.sendfile(__dirname + 'public/website.html');
 })
   
 var port = 8080;
