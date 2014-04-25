@@ -21,7 +21,7 @@ app.listen(port, function() {
  
 function smovement(tmovement) { socket.emit('tmove',tmovement); }
 
-function sspeed(tspeed = { socket.emit('tspeed',tspeed); }
+function sspeed(tspeed) { socket.emit('tspeed',tspeed); }
 
 io.sockets.on('connection', function(socket) {
   
