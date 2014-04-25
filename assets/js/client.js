@@ -1,4 +1,4 @@
-var urlLink = 'http://ec2-54-187-127-168.us-west-2.compute.amazonaws.com/';
+var urlLink = '54.187.127.168:5000';
 var socket = io.connect(urlLink);
 
 function direction(direction) {
