@@ -1,0 +1,19 @@
+.direction {
+  width: 10em;  height: 5em;
+  padding: 2em;
+  background-color: red;
+  position:relative;
+  float: none;
+}
+.speed {
+  width: 10em;  height: 5em;
+  margin-left: auto; margin-right: auto;
+  background-color: green;
+  position:relative;
+  float: none;
+}
+#stop {
+  width: 20.3em; height: 3em;
+  margin-left: auto; margin-right: auto;
+  background-color: blue;
+}

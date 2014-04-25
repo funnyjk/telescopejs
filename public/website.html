@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>TelescopeJS</title>
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet" />
+        <link rel="shortcut icon" href="images/outer-space-stars.jpg">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="js/config.js"></script>
+        <script src="js/skel.min.js"></script>
+        <script src="js/socket.io.js"></script>
+		<script src="js/client.js"></script>
+        <noscript>   
+            <link rel="stylesheet" href="css/skel-noscript.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>		
+</head>
+<body>
+	<nav id="nav">
+    	<u1 class="conatiner">
+        	<li><a href="#top">Top</a></li>
+            <li><a href="#video">Video</a></li>
+            <li><a href="#control">Controls</a></li>
+            <li><a href="#about">About</a></li>
+        </u1>
+    </nav>
+	<div class="wrapper wrapper-style1 wrapper-first">
+    	<article class="container" id="top">
+        	<div class="row">
+            	<div class="4u">
+                	<span class="me image image-full"><img src="images/outer-space-stars.jpg" alt="" /></span>
+                </div>
+                <div class="8u">
+                	<header>
+                    	<h1>Telescope<strong>JS</strong></h1>
+                    </header>
+                    	<p>Control a Meade <strong>Telescope</strong> using <strong>NodeJS</strong> and <strong>Socket.io</strong><br />Your window to outer <strong>space</strong></p>
+              		</div>
+				</div>
+		</article>
+	</div>
+    <div class="wrapper wrapper-style4">
+    	<article id="video">
+        	<header>
+                <h2>Watch the LIVE video stream</h2>
+                <span>Scroll down further to control the Telescope yourself!</span>
+			<!--<span class="fa featured fa-play-circle"></span>-->
+           	</header>
+           <div class="container">
+           	<div class="row">
+           		<div class="8u">
+                	<section class="image image-full">
+                    	<span class="image image-full"><img src="http://dummyimage.com/ntsc" alt="" /></span>
+                    </section>
+                </div>
+                <div class="4u">
+                	<article id="control">
+                    <h1 class="jquery">hello</h1>
+                    	<li class="button button-alt" onclick="direction('north')">North</li>
+                        <li class="button button-alt" onclick="direction('south')">East </li>
+                        <li class="button button-alt" onclick="direction('east')">South</li>
+                        <li class="button button-alt" onclick="direction('west')">West </li>
+                        <br />
+                        <li class="button button-alt" onclick="direction('stop')">Stop</li>
+                        <span class="fa featured fa-moon-o"></span>
+                        <li class="button button-alt" onclick="speed('G')">Slowest</li>
+                        <li class="button button-alt" onclick="speed('C')">Slow</li>
+                        <li class="button button-alt" onclick="speed('M')">Fast</li>
+                        <li class="button button-alt" onclick="speed('S')">Fastest</li>
+                    </article>
+                </div>
+            </div>
+           </div>
+        </article>
+    </div>
+    <div class="wrapper wrapper-style2">
+    	<article class="container small" id="about">
+<header>
+						<h2>Like what you see?</h2>
+						<span>Send us your comments and questions!.</span>
+					</header>
+						<div class="row">
+							<div class="12u">
+                            <form method="post" action="MAILTO:scott_shevrin@mymail.bcc.edu" method="post" enctype="text/plain">
+									<div>
+										<div class="row half">
+											<div class="6u">
+												<input type="text" name="name" id="name" placeholder="Name" />
+											</div>
+											<div class="6u">
+												<input type="text" name="email" id="email" placeholder="Email" />
+											</div>
+										</div>
+										<div class="row half">
+											<div class="12u">
+												<input type="text" name="subject" id="subject" placeholder="Subject" />
+											</div>
+										</div>
+										<div class="row half">
+											<div class="12u">
+												<textarea name="message" id="message" placeholder="Message"></textarea>
+											</div>
+										</div>
+										<div class="row">
+											<div class="12u">
+												<a href="#" class="button form-button-submit">Send Message</a>
+												<a href="#" class="button button-alt form-button-reset">Clear Form</a>
+											</div>
+										</div>
+									</div>
+								</form>
+								<hr />
+								<h3>Find me on ...</h3>
+								<ul class="social">
+									<li class="twitter"><a href="http://twitter.com/funnyjk" class="fa social fa-twitter"><span>Twitter</span></a></li>
+									<li class="github"><a href="http://github.com/funnyjk" class="fa fa-github"><span>Github</span></a></li>
+        </ul>
+								<hr />
+							</div>
+						</div>
+					</div>
+					<footer>
+						<ul id="copyright">
+
+						</ul>
+					</footer>
+				</article>
+    </div>
+    <script>
+							$( ".jquery" ).hover( 
+								function() {
+								$( this ).append( $( "<span>jquery</span>" ) );
+								}, function() {
+									$( this ).find( "span:last" ).remove();
+							});
+   </script>
+</body>
+
+</html>
