@@ -14,7 +14,7 @@ app.get('/', function(req, res){
   res.sendfile(__dirname + '/website.html');
 })
   
-var port = 3000;
+var port = 8080;
 app.listen(port, function() {
 	console.log("Listening on " + port);
 });
