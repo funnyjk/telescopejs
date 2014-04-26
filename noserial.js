@@ -21,7 +21,9 @@ app.listen(port, function() {
  
  function smovement(tmovement) {  socket.broadcast.emit('tmove',tmovement); }
 
- function sspeed(tspeed) {  socket.broadcast.emit('tspeed',tspeed); }
+ function sspeed(tspeed) { i socket.broadcast.emit('tspeed',tspeed); }
+
+io.sockets.on('connection', function(socket) {
    
   socket.on('direction', function(direction) {
     smovement(direction);
@@ -32,3 +34,4 @@ app.listen(port, function() {
   socket.on('test', function(data) {
     console.log(data);
   });
+});
