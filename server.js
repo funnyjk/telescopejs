@@ -40,7 +40,7 @@ var dest = {
 };
 
 var socketIO = require('socket.io-client');
-var socket = socketIO.connect('http://nodeplayscar.herokuapp.com/');
+var socket = socketIO.connect('http://107.170.68.139:5000');
   
   socket.on('tmovement', function(direction) {
     tdirection[direction]();
