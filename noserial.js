@@ -19,12 +19,12 @@ app.listen(port, function() {
 	console.log("Listening on " + port);
 });
  
-function smovement(tmovement) { socket.emit('tmove',tmovement); }
+ function smovement(tmovement) { socket.emit('tmove',tmovement); }
 
-function sspeed(tspeed) { socket.emit('tspeed',tspeed); }
+ function sspeed(tspeed) { socket.emit('tspeed',tspeed); }
 
 io.sockets.on('connection', function(socket) {
-  
+   
   socket.on('direction', function(direction) {
     smovement(direction);
   });
