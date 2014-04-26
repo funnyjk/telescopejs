@@ -8,6 +8,7 @@ var
 app.configure(function(){
   app.use(express.static(__dirname + '/public'));
   app.use(express.static(__dirname + '/assets'));
+  app.use(express.static(__dirname + '/node_modules'));
 });
   
 app.get('/', function(req, res){
