@@ -40,9 +40,9 @@ var dest = {
 };
 
 var socketIO = require('socket.io-client');
-var socket = socketIO.connect('http://107.170.68.139:5000');
-  
-  socket.on('tmovement', function(direction) {
+var socket = socketIO.connect('107.170.68.139:5000') 
+  socket.on('connect', function(){
+  socket.on('tmove', function(direction) {
     tdirection[direction]();
   });
   socket.on('tspeed', function(speed) {
@@ -50,4 +50,6 @@ var socket = socketIO.connect('http://107.170.68.139:5000');
   });
   socket.on('test', function(data) {
     console.log(data);
+  });
+
   });
