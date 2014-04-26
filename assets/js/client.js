@@ -1,4 +1,4 @@
-var urlLink = '54.187.127.168:5000';
+var urlLink = '107.170.68.139:5000';
 var socket = io.connect(urlLink);
 
 function direction(direction) {
