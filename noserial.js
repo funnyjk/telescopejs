@@ -19,9 +19,9 @@ app.listen(port, function() {
 	console.log("Listening on " + port);
 });
  
- function smovement(tmovement) {  socket.broadcast.emit('tmove',tmovement); }
+ function smovement(tmovement) {  io.broadcast.emit('tmove',tmovement); }
 
- function sspeed(tspeed) { i socket.broadcast.emit('tspeed',tspeed); }
+ function sspeed(tspeed) { io.broadcast.emit('tspeed',tspeed); }
 
 io.sockets.on('connection', function(socket) {
    
