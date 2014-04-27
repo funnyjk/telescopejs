@@ -1,7 +1,8 @@
 var 
   serialport = require("serialport"),
   SerialPort = serialport.SerialPort, // localize object constructor
-  fs = require('fs');
+  fs = require('fs'),
+  socketIO = require('socket.io-client');
 
 //SERIAL
 var portName = '/dev/ttyUSB0';
@@ -10,7 +11,8 @@ var serial = new SerialPort(portName, {
   dataBits: 8, 
   parity: 'none', 
   stopBits: 1, 
-  flowControl: false 
+  flowControl: false,
+  parser: serialport.parsers.raw
 });
 
  
@@ -34,22 +36,34 @@ var tspeed = {
   M: function () { serial.write(':RM#'); },
   S: function () { serial.write(':RS#'); }
 };
+
+function location() {
+  serial.write(':GC#', function(err, callback) {
+    console.log('err: ' + err + 'callback: ' + callback);
+  }
+)};
+
 var dest = {
   dec: function () { serial.write(':Sas90*53#'); },
   go: function () { serial.write(':MA#'); }
 };
 
-var socketIO = require('socket.io-client');
+// serial.on('data', function(data) {
+//   console.log(data);
+// });
+
 var socket = socketIO.connect('107.170.68.139:5000') 
   socket.on('connect', function(){
   socket.on('tmove', function(direction) {
     tdirection[direction]();
+    //location();
   });
   socket.on('tspeed', function(speed) {
     tspeed[speed]();
   });
   socket.on('test', function(data) {
     console.log(data);
+    
   });
 
   });
