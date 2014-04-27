@@ -1,69 +1,37 @@
 var 
-  serialport = require("serialport"),
-  SerialPort = serialport.SerialPort, // localize object constructor
-  fs = require('fs'),
-  socketIO = require('socket.io-client');
-
-//SERIAL
-var portName = '/dev/ttyUSB0';
-var serial = new SerialPort(portName, {
-  baudRate: 9600,
-  dataBits: 8, 
-  parity: 'none', 
-  stopBits: 1, 
-  flowControl: false,
-  parser: serialport.parsers.raw
+  express = require('express'),
+  app = express(),
+  server = require('http').createServer(app),
+  io = require('socket.io').listen(5000),
+  fs = require('fs');
+  
+app.configure(function(){
+  app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/assets'));
 });
-
+  
+app.get('/', function(req, res){
+  res.sendfile(__dirname + 'public/index.html');
+})
+  
+var port = 80;
+app.listen(port, function() {
+	console.log("Listening on " + port);
+});
  
-function serial_start() {
-  serial.on("open", function () {
-      console.log('open serial communication');
-    });
-}
+ function smovement(tmovement) {  io.sockets.emit('tmove',tmovement); }
 
-serial_start();
-var tdirection = {
-  north: function () { serial.write(':Mn#'); },
-  east:  function () { serial.write(':Me#'); },
-  south: function () { serial.write(':Ms#'); },
-  west:  function () { serial.write(':Mw#'); },
-  stop:  function () { serial.write(':Q#'); }
-};
-var tspeed = {
-  G: function () { serial.write(':RG#'); },
-  C: function () { serial.write(':RC#'); },
-  M: function () { serial.write(':RM#'); },
-  S: function () { serial.write(':RS#'); }
-};
+ function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 
-function location() {
-  serial.write(':GC#', function(err, callback) {
-    console.log('err: ' + err + 'callback: ' + callback);
-  }
-)};
-
-var dest = {
-  dec: function () { serial.write(':Sas90*53#'); },
-  go: function () { serial.write(':MA#'); }
-};
-
-// serial.on('data', function(data) {
-//   console.log(data);
-// });
-
-var socket = socketIO.connect('107.170.68.139:5000') 
-  socket.on('connect', function(){
-  socket.on('tmove', function(direction) {
-    tdirection[direction]();
-    //location();
+io.sockets.on('connection', function(socket) {
+  
+  socket.on('direction', function(direction) {
+    smovement(direction);
   });
-  socket.on('tspeed', function(speed) {
-    tspeed[speed]();
+  socket.on('speed', function(speed) {
+    sspeed(speed);
   });
   socket.on('test', function(data) {
     console.log(data);
-    
   });
-
-  });
+});
