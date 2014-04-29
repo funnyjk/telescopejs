@@ -4,7 +4,8 @@ var
   server = require('http').createServer(app),
   io = require('socket.io').listen(5000),
   fs = require('fs');
-  
+
+//Express hosting the file folders 
 app.configure(function(){
   app.use(express.static(__dirname + '/public'));
   app.use(express.static(__dirname + '/assets'));
@@ -18,13 +19,15 @@ var port = 80;
 app.listen(port, function() {
 	console.log("Listening on " + port);
 });
- 
- function smovement(tmovement) {  io.sockets.emit('tmove',tmovement); }
 
+//Functions to emit to telescope
+  //move the telescope
+ function smovement(tmovement) {  io.sockets.emit('tmove',tmovement); }
+ //Set the speed of the telescope
  function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 
+//Socket information
 io.sockets.on('connection', function(socket) {
-  
   socket.on('direction', function(direction) {
     smovement(direction);
   });
@@ -35,3 +38,4 @@ io.sockets.on('connection', function(socket) {
     console.log(data);
   });
 });
+

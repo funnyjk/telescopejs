@@ -15,14 +15,17 @@ var serial = new SerialPort(portName, {
   parser: serialport.parsers.raw
 });
 
- 
+//Opens the serial conneciton 
 function serial_start() {
   serial.on("open", function () {
       console.log('open serial communication');
     });
 }
-
+//runs the serial funciton
 serial_start();
+
+//Controls
+//direciton
 var tdirection = {
   north: function () { serial.write(':Mn#'); },
   east:  function () { serial.write(':Me#'); },
@@ -30,19 +33,20 @@ var tdirection = {
   west:  function () { serial.write(':Mw#'); },
   stop:  function () { serial.write(':Q#'); }
 };
+//speed
 var tspeed = {
   G: function () { serial.write(':RG#'); },
   C: function () { serial.write(':RC#'); },
   M: function () { serial.write(':RM#'); },
   S: function () { serial.write(':RS#'); }
 };
-
+//testing for querying location movement
 function location() {
   serial.write(':GC#', function(err, callback) {
     console.log('err: ' + err + 'callback: ' + callback);
   }
 )};
-
+//testing for slewing to destination
 var dest = {
   dec: function () { serial.write(':Sas90*53#'); },
   go: function () { serial.write(':MA#'); }
@@ -52,18 +56,20 @@ var dest = {
 //   console.log(data);
 // });
 
+//socket connection information
 var socket = socketIO.connect('107.170.68.139:5000') 
   socket.on('connect', function(){
-  socket.on('tmove', function(direction) {
+    //using the sockets to send movement
+    socket.on('tmove', function(direction) {
     tdirection[direction]();
     //location();
   });
-  socket.on('tspeed', function(speed) {
+    //speed socket on
+    socket.on('tspeed', function(speed) {
     tspeed[speed]();
   });
-  socket.on('test', function(data) {
+    //console.log tests socket.io
+    socket.on('test', function(data) {
     console.log(data);
-    
-  });
-
-  });
+  }); 
+});
