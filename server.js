@@ -63,8 +63,8 @@ io.sockets.on('connection', function(socket) {
 		}, function(err, telescope) {
 			if (err)
 				console.log(err);
-		}
-	}
+		});
+	});
   
   socket.on('direction', function(direction) {
     smovement(direction);
