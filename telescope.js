@@ -58,7 +58,12 @@ var dest = {
 
 //socket connection information
 var socket = socketIO.connect('107.170.68.139:5000') 
-  socket.on('connect', function(){
+
+socket.on('connect', function(){
+	
+	//Tell the server this is a telescope
+	socket.emit('telescope');
+	
     //using the sockets to send movement
     socket.on('tmove', function(direction) {
     tdirection[direction]();
