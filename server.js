@@ -39,6 +39,9 @@ app.get('/', function(req, res){
 			res.json(telescopes);
 		});
 	});
+	app.get('/api/test', function(req, res) {
+		res.send('hello world');
+	});
 
 //Express Port
 var port = 80;
