@@ -33,11 +33,11 @@ app.get('/', function(req, res){
 	//List All Telescopes
 	app.get('/api/telescope', function(req, res) {
 		//Mongoose
-		telescope.find(function(err, telescope) {
+		telescope.find(function(err, telescopes) {
 			//error checking
 			if (err)
 				res.send(err)
-			res.json(telescope);
+			res.json(telescopes);
 		});
 	});
 
@@ -55,6 +55,18 @@ app.listen(port, function() {
 
 //Socket information
 io.sockets.on('connection', function(socket) {
+  
+  //Telescope Connect
+  socket.on('telescope', function(socket) {
+	var hs = socket.handshake;
+		telescope.create({
+			socketid: socket
+		}, function(err, telescope) {
+			if (err)
+				console.log(err);
+		}
+	}
+  
   socket.on('direction', function(direction) {
     smovement(direction);
   });
@@ -63,6 +75,16 @@ io.sockets.on('connection', function(socket) {
   });
   socket.on('test', function(data) {
     console.log(data);
+  });
+  
+  //On telescope disconnect
+  socket.on('disconnect', function(socket) {
+	telescope.find({
+		socketid: socket
+	}, function(err, telescopes) {
+		if (err)
+			console.log('Deleting Error: ' + err);
+	});
   });
 });
 
