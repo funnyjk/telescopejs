@@ -2,7 +2,7 @@
 var telescopejs = angular.module('telescopejs', []);
 
 function mainController($scope, $http) {
-	$scope.formData{};
+	$scope.formData = {};
 	
 	//When landing on page, get all connected telescopes and show them
 	$http.get('/api/telescope')
