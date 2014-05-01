@@ -35,8 +35,7 @@ app.get('/', function(req, res){
 		//Mongoose
 		telescope.find(function(err, telescopes) {
 			//error checking
-			if (err)
-				res.send(err)
+			if (err) res.send(err);
 			res.json(telescopes);
 		});
 	});
