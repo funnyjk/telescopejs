@@ -60,7 +60,6 @@ io.sockets.on('connection', function(socket) {
   
   //Telescope Connect
   socket.on('telescope', function(socket) {
-	var hs = socket.handshake;
 		telescope.create({
 			socketid: socket
 		}, function(err, telescope) {
