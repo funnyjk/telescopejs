@@ -37,6 +37,10 @@ var telescopeModel = mongoose.model('telescope',telescopeSchema);
 //Client Schema
 var clientModel = mongoose.model('client', clientSchema);	
 
+//====ON Start====
+telescopeModel.remove();
+clientModel.remove();
+
 //====================Routes====================
 app.get('/', function(req, res){
   res.sendfile(__dirname + 'public/index.html');
