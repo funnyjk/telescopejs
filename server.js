@@ -6,7 +6,7 @@ var 	express = require('express'),
 	io = require('socket.io').listen(8080),
 	fs = require('fs'),
 	mongoose = require('mongoose');
-  
+
 //====================Express Configure====================
 app.configure(function(){
 	app.use(express.static(__dirname + '/public'));
@@ -91,6 +91,7 @@ function smovement(tmovement) {  io.sockets.emit('tmove',tmovement); }
 function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 
 //====================Socket.io====================
+io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
 	var socketid = socket.id;
 	console.log('Socket: ' + socketid + ' Connected');
