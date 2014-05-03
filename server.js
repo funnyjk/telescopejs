@@ -33,9 +33,9 @@ var clientSchema = new Schema({
 
 //====Define Model====
 //Telescope Schema
-var telescope = mongoose.model('telescope',telescopeSchema);
+var telescopeModel = mongoose.model('telescope',telescopeSchema);
 //Client Schema
-var client = mongoose.model('client', clientSchema);	
+var clientModel = mongoose.model('client', clientSchema);	
 
 //====================Routes====================
 app.get('/', function(req, res){
@@ -86,21 +86,19 @@ io.sockets.on('connection', function(socket) {
 	//Telescope Connect
 	socket.on('telescope', function(socket) {
 		//Add to Mongoose
-		telescope.create({
-			socketid: socket
-		}, function(err, telescope) {
-			if (err)
-				console.log(err);
+		var telescope = new telescopeModel();
+		telescope.socketid = socket;
+		telescope.save(function(err) {
+			if (err) console.log(err);
 		});
 	});
 	//Client Connect
 	socket.on('client', function(socket) {
 		//Add to Mongoose
-		client.create({
-			socketid: socket
-		}, function(err, telescope) {
-			if (err)
-				console.log(err);
+		var client = new clientModel();
+		client.socketid = socket;
+		client.save(function(err) {
+			if (err) console.log(err);
 		});
 	});
 	  
