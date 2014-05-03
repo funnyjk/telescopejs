@@ -39,8 +39,14 @@ var clientModel = mongoose.model('client', clientSchema);
 
 //====ON Start====
 function on_start(){
-	telescopeModel.remove();
-	clientModel.remove();
+	telescopeModel.remove({}, function(err, telescopes) {
+		if (err)
+		console.log('Deleting Error: ' + err);
+	});
+	clientModel.remove({}, function(err, clients) {
+		if (err)
+		console.log('Deleting Error: ' + err);
+	});
 }
 //====================Routes====================
 app.get('/', function(req, res){
@@ -87,6 +93,7 @@ function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 //====================Socket.io====================
 io.sockets.on('connection', function(socket) {
 	var socketid = socket.id;
+	console.log('Socket: ' + socketid + ' Connected');
 //====Socket.io Connect====
 	//Telescope Connect
 	socket.on('telescope', function(socket) {
@@ -130,15 +137,14 @@ io.sockets.on('connection', function(socket) {
 			if (err)
 			console.log('Deleting Error: ' + err);
 		});
-	});
-	//On Client disconnect
-	socket.on('disconnect', function(socket) {
+	//On Client Disconnect
 		clientModel.remove({
 			socketid: socketid
 		}, function(err, telescopes) {
 			if (err)
 			console.log('Deleting Error: ' + err);
 		});
+		console.log('Socket: ' + socketid + ' Disconnected');
 	});
 });
 
