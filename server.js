@@ -1,65 +1,91 @@
-var 
-  express = require('express'),
-  app = express(),
-  server = require('http').createServer(app),
-  io = require('socket.io').listen(5000),
-  fs = require('fs'),
-  mongoose = require('mongoose');
+//====TelescopeJS == Server.js====
+//====================Server Dependencies====================
+var 	express = require('express'),
+	app = express(),
+	server = require('http').createServer(app),
+	io = require('socket.io').listen(5000),
+	fs = require('fs'),
+	mongoose = require('mongoose');
   
-//Mongoose Configure	=======================
+//====================Express Configure====================
+app.configure(function(){
+	app.use(express.static(__dirname + '/public'));
+	app.use(express.static(__dirname + '/assets'));
+	app.use(express.bodyParser());
+});
+
+//====================Mongoose Configure====================
 mongoose.connect('mongodb://localhost/telescope');
 
-//Express Configure		=======================
-app.configure(function(){
-  app.use(express.static(__dirname + '/public'));
-  app.use(express.static(__dirname + '/assets'));
-  app.use(express.bodyParser());
+//====Define Schema====
+var Schema = mongoose.Schema;
+
+//Telescope Schema
+var telescopeSchema = new Schema({
+	socketid: String,
+	name: String
 });
-  
-//Define Model
-var client = mongoose.model('client', {
-	socketid: String
-});	
-var telescope = mongoose.model('telescope', {
-	socketid: String
+//Client Schema
+var clientSchema = new Schema({
+	socketid: String,
+	name: String
 });
 
-//Routes 				=======================
+//====Define Model====
+//Telescope Schema
+var telescope = mongoose.model('telescope',telescopeSchema);
+//Client Schema
+var client = mongoose.model('client', clientSchema);	
+
+//====================Routes====================
 app.get('/', function(req, res){
   res.sendfile(__dirname + 'public/index.html');
 })
 
-//=======================API==============================================
-	//List All Telescopes
-	app.get('/api/telescope', function(req, res) {
-		//Mongoose
-		telescope.find(function(err, telescopes) {
-			//error checking
-			if (err) res.send(err)
+//====================API====================
+//List All Telescopes
+app.get('/api/telescopes', function(req, res) {
+	//Mongoose
+	telescope.find(function(err, telescopes) {
+		//error checking
+		if (err) res.send(err)
 			res.json(telescopes);
-		});
 	});
-	app.get('/api/test', function(req, res) {
-		res.send('hello world');
+});
+//List all clients
+app.get('/api/clients', function(req, res) {
+	//Mongoose
+	client.find(function(err, clients) {
+		//error checking
+		if (err) res.send(err)
+			res.json(clients)
 	});
+});
+//Test
+app.get('/api/test', function(req, res) {
+	res.send('hello world');
+});
 
-//Express Port
+//==========Express Port==========
 var port = 80;
 app.listen(port, function() {
 	console.log("Listening on " + port);
 });
 
-//Functions to emit to telescope
-  //move the telescope
- function smovement(tmovement) {  io.sockets.emit('tmove',tmovement); }
- //Set the speed of the telescope
- function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
+//====================Functions====================
+//====Telescope====
+//==Slew in direction==
+function smovement(tmovement) {  io.sockets.emit('tmove',tmovement); }
+//==Set Telescope Speed==
+function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 
-//Socket information
+//====================Socket.io====================
 io.sockets.on('connection', function(socket) {
-  
-  //Telescope Connect
-  socket.on('telescope', function(socket) {
+
+//====Socket.io Connect====
+	//Telescope Connect
+	socket.on('telescope', function(socket) {
+		//Add to Mongoose
 		telescope.create({
 			socketid: socket
 		}, function(err, telescope) {
@@ -67,25 +93,40 @@ io.sockets.on('connection', function(socket) {
 				console.log(err);
 		});
 	});
-  
-  socket.on('direction', function(direction) {
-    smovement(direction);
-  });
-  socket.on('speed', function(speed) {
-    sspeed(speed);
-  });
-  socket.on('test', function(data) {
-    console.log(data);
-  });
-  
-  //On telescope disconnect
-  socket.on('disconnect', function(socket) {
-	telescope.find({
-		socketid: socket
-	}, function(err, telescopes) {
-		if (err)
-			console.log('Deleting Error: ' + err);
+	//Client Connect
+	socket.on('client', function(socket) {
+		//Add to Mongoose
+		client.create({
+			socketid: socket
+		}, function(err, telescope) {
+			if (err)
+				console.log(err);
+		});
 	});
-  });
+	  
+//====Various Sockets====
+	//Directional Movement === Client === Telescope
+	socket.on('direction', function(direction) {
+		smovement(direction);
+	});
+	//Set Speed === Client === Telescope
+	socket.on('speed', function(speed) {
+		sspeed(speed);
+	});
+	//Console Log incoming information
+	socket.on('test', function(data) {
+		console.log(data);
+	});
+  
+//==========Disconnects==========
+	//On telescope disconnect
+	socket.on('disconnect', function(socket) {
+		telescope.find({
+			socketid: socket
+		}, function(err, telescopes) {
+			if (err)
+			console.log('Deleting Error: ' + err);
+		});
+	});
 });
 

@@ -6,98 +6,99 @@
 
 <title>TelescopeJS</title>
 
-		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet" />
-        <link rel="shortcut icon" href="images/outer-space-stars.jpg">
-		
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
-		<script src="js/core.js"></script>
-        <script src="js/config.js"></script>
-        <script src="js/skel.min.js"></script>
-        <script src="lib/socket.io.js"></script>
-		<script src="js/client.js"></script>
-        <noscript>   
-            <link rel="stylesheet" href="css/skel-noscript.css" />
-			<link rel="stylesheet" href="css/style.css" />
-			<link rel="stylesheet" href="css/style-desktop.css" />
-		</noscript>		
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet" />
+	<link rel="shortcut icon" href="images/outer-space-stars.jpg">	
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+	<script src="js/core.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/skel.min.js"></script>
+	<script src="lib/socket.io.js"></script>
+	<script src="js/client.js"></script>
+	
+	<noscript>   
+		<link rel="stylesheet" href="css/skel-noscript.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/style-desktop.css" />
+	</noscript>		
 </head>
 <body>
 	<nav id="nav">
-    	<u1 class="conatiner">
-        	<li><a href="#top">Top</a></li>
-            <li><a href="#video">Video</a></li>
-            <li><a href="#control">Controls</a></li>
-            <li><a href="#about">About</a></li>
-        </u1>
-    </nav>
+	<u1 class="conatiner">
+		<li><a href="#top">Top</a></li>
+	<li><a href="#video">Video</a></li>
+	<li><a href="#control">Controls</a></li>
+	<li><a href="#about">About</a></li>
+	</u1>
+</nav>
 	<div class="wrapper wrapper-style1 wrapper-first">
-    	<article class="container" id="top">
-        	<div class="row">
-            	<div class="4u">
-                	<span class="me image image-full"><img src="images/outer-space-stars.jpg" alt="" /></span>
-                </div>
-                <div class="8u">
-                	<header>
-                    	<h1>Telescope<strong>JS</strong></h1>
-                    </header>
-                    	<p>Control a Meade <strong>Telescope</strong> using <strong>NodeJS</strong> and <strong>Socket.io</strong><br />Your window to outer <strong>space</strong></p>
-              		</div>
+	<article class="container" id="top">
+		<div class="row">
+		<div class="4u">
+			<span class="me image image-full"><img src="images/outer-space-stars.jpg" alt="" /></span>
+		</div>
+		<div class="8u">
+			<header>
+			<h1>Telescope<strong>JS</strong></h1>
+		</header>
+			<p>Control a Meade <strong>Telescope</strong> using <strong>NodeJS</strong> and <strong>Socket.io</strong><br />Your window to outer <strong>space</strong></p>
+			</div>
 				</div>
 		</article>
 	</div>
-    <div class="wrapper wrapper-style4">
-    	<article id="video">
-        	<header>
-                <h2>Watch the LIVE video stream</h2>
-                <span>Scroll down further to control the Telescope yourself!</span>
+<div class="wrapper wrapper-style4">
+	<article id="video">
+		<header>
+		<h2>Watch the LIVE video stream</h2>
+		<span>Scroll down further to control the Telescope yourself!</span>
 			<!--<span class="fa featured fa-play-circle"></span>-->
-           	</header>
-           <div class="container">
-           	<div class="row">
-           		<div class="8u">
-                	<section class="image image-full">
+		</header>
+	<div class="container">
+		<div class="row">
+			<div class="8u">
+			<section class="image image-full">
 						<object class="image image-full" type="application/x-shockwave-flash" height="480" width="720" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel=funnyjk" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param name="flashvars" value="hostname=www.twitch.tv&channel=funnyjk&auto_play=true&start_volume=0" /></object>
-                    </section>
-                </div>
-                <div class="4u">
-                	<article id="control">
-                    <h1 class="jquery">Controls</h1>
-                    	<li class="button button-alt" onclick="direction('north')">North</li>
-                        <li class="button button-alt" onclick="direction('south')">South</li>
+		</section>
+		</div>
+		<div class="4u">
+			<article id="control">
+		<h1 class="jquery">Controls</h1>
+			<li class="button button-alt" onclick="direction('north')">North</li>
+			<li class="button button-alt" onclick="direction('south')">South</li>
 						<li class="button button-alt" onclick="direction('east')">East </li>
-                        <li class="button button-alt" onclick="direction('west')">West </li>
-                        <br />
-                        <li class="button button-alt" onclick="direction('stop')">Stop</li>
-                        <span class="fa featured fa-moon-o"></span>
-                        <li class="button button-alt" onclick="speed('G')">Slowest</li>
-                        <li class="button button-alt" onclick="speed('C')">Slow</li>
-                        <li class="button button-alt" onclick="speed('M')">Fast</li>
-                        <li class="button button-alt" onclick="speed('S')">Fastest</li>
-                    </article>
-                </div>
-            </div>
-           </div>
-		   <!-- testing telescope list -->
+			<li class="button button-alt" onclick="direction('west')">West </li>
+			<br />
+			<li class="button button-alt" onclick="direction('stop')">Stop</li>
+			<span class="fa featured fa-moon-o"></span>
+			<li class="button button-alt" onclick="speed('G')">Slowest</li>
+			<li class="button button-alt" onclick="speed('C')">Slow</li>
+			<li class="button button-alt" onclick="speed('M')">Fast</li>
+			<li class="button button-alt" onclick="speed('S')">Fastest</li>
+		</article>
+		</div>
+	</div>
+	</div>
+		<!-- testing telescope list -->
 			<div id="telescope-list" class="row">
 				<div class="col-sm-4 col-sm-offset-4">
 					<!--for each telescope-->
 					<div ng-repeat="telescope in telescopes">
-						Telescope {{ telescope.test }}
+						Telescope {{ telescope.socketid }}
 					</div>
 				</div>	
 			</div>
-        </article>
-    </div>
-    <div class="wrapper wrapper-style2">
-    	<article class="container small" id="about">
+	</article>
+</div>
+<div class="wrapper wrapper-style2">
+	<article class="container small" id="about">
 <header>
 						<h2>Like what you see?</h2>
 						<span>Send us your comments and questions!.</span>
 					</header>
 						<div class="row">
 							<div class="12u">
-                            <form method="post" action="MAILTO:scott_shevrin@mymail.bcc.edu" method="post" enctype="text/plain">
+			<form method="post" action="MAILTO:scott_shevrin@mymail.bcc.edu" method="post" enctype="text/plain">
 									<div>
 										<div class="row half">
 											<div class="6u">
@@ -130,7 +131,7 @@
 								<ul class="social">
 									<li class="twitter"><a href="http://twitter.com/funnyjk" class="fa social fa-twitter"><span>Twitter</span></a></li>
 									<li class="github"><a href="http://github.com/funnyjk" class="fa fa-github"><span>Github</span></a></li>
-        </ul>
+	</ul>
 								<hr />
 							</div>
 						</div>
@@ -141,15 +142,15 @@
 						</ul>
 					</footer>
 				</article>
-    </div>
-    <script>
+</div>
+<script>
 							$( ".jquery" ).hover( 
 								function() {
 								$( this ).append( $( "<span></span>" ) );
 								}, function() {
 									$( this ).find( "span:last" ).remove();
 							});
-   </script>
+</script>
 </body>
 
 </html>
