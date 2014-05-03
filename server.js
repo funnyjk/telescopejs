@@ -46,7 +46,7 @@ app.get('/', function(req, res){
 //List All Telescopes
 app.get('/api/telescopes', function(req, res) {
 	//Mongoose
-	telescope.find(function(err, telescopes) {
+	telescopeModel.find(function(err, telescopes) {
 		//error checking
 		if (err) res.send(err)
 			res.json(telescopes);
@@ -55,7 +55,7 @@ app.get('/api/telescopes', function(req, res) {
 //List all clients
 app.get('/api/clients', function(req, res) {
 	//Mongoose
-	client.find(function(err, clients) {
+	clientModel.find(function(err, clients) {
 		//error checking
 		if (err) res.send(err)
 			res.json(clients)
@@ -119,7 +119,7 @@ io.sockets.on('connection', function(socket) {
 //==========Disconnects==========
 	//On telescope disconnect
 	socket.on('disconnect', function(socket) {
-		telescope.find({
+		telescopeModel.find({
 			socketid: socket
 		}, function(err, telescopes) {
 			if (err)
