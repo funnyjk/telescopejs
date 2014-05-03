@@ -142,3 +142,5 @@ io.sockets.on('connection', function(socket) {
 	});
 });
 
+//====================On Start====================
+on_start();
