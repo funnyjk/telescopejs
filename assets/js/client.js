@@ -2,6 +2,13 @@
 var urlLink = '107.170.68.139:5000';
 var socket = io.connect(urlLink);
 
+//===Testing===
+var localLink = '192.168.1.13:5000';
+var socketLocal = io.connect(localLink);
+socketLocal.on('connect', function() {
+	socket.emit('client');
+});
+
 //====On Conntection====
 socket.on('connect', function() {
 	socket.emit('client');

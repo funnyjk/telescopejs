@@ -85,18 +85,20 @@ io.sockets.on('connection', function(socket) {
 //====Socket.io Connect====
 	//Telescope Connect
 	socket.on('telescope', function(socket) {
+		var socketid = 'telescope test';
 		//Add to Mongoose
 		var telescope = new telescopeModel();
-		telescope.socketid = socket;
+		telescope.socketid = socketid;
 		telescope.save(function(err) {
 			if (err) console.log(err);
 		});
 	});
 	//Client Connect
 	socket.on('client', function(socket) {
+		var socketid = 'client test';
 		//Add to Mongoose
 		var client = new clientModel();
-		client.socketid = socket;
+		client.socketid = socketid;
 		client.save(function(err) {
 			if (err) console.log(err);
 		});
