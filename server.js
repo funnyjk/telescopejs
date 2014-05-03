@@ -3,7 +3,7 @@
 var 	express = require('express'),
 	app = express(),
 	server = require('http').createServer(app),
-	io = require('socket.io').listen(5000),
+	io = require('socket.io').listen(80),
 	fs = require('fs'),
 	mongoose = require('mongoose');
   
