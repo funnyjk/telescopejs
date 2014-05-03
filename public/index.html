@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app="telescopejs">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="telescopejs" ng-controller="mainController">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
@@ -26,7 +26,7 @@
 <body>
 	<nav id="nav">
 	<u1 class="conatiner">
-		<li><a href="#top">Top</a></li>
+	<li><a href="#top">Top</a></li>
 	<li><a href="#video">Video</a></li>
 	<li><a href="#control">Controls</a></li>
 	<li><a href="#about">About</a></li>
@@ -92,7 +92,7 @@
 				<div class="col-sm-4 col-sm-offset-4">
 					<!--for each telescope-->
 					<div ng-repeat="client in clients">
-						Telescope {{ client.socketid }}
+						client {{ client.socketid }}
 					</div>
 				</div>	
 			</div>

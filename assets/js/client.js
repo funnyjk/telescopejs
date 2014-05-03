@@ -6,7 +6,7 @@ var socket = io.connect(urlLink);
 var localLink = '192.168.1.13:5000';
 var socketLocal = io.connect(localLink);
 socketLocal.on('connect', function() {
-	socket.emit('client');
+	socketLocal.emit('client');
 });
 
 //====On Conntection====

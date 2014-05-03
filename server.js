@@ -49,7 +49,7 @@ app.get('/api/telescopes', function(req, res) {
 	telescopeModel.find(function(err, telescopes) {
 		//error checking
 		if (err) res.send(err)
-			res.json(telescopes);
+		res.json(telescopes);
 	});
 });
 //List all clients
@@ -58,7 +58,7 @@ app.get('/api/clients', function(req, res) {
 	clientModel.find(function(err, clients) {
 		//error checking
 		if (err) res.send(err)
-			res.json(clients)
+		res.json(clients)
 	});
 });
 //Test
