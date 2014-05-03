@@ -117,10 +117,19 @@ io.sockets.on('connection', function(socket) {
 	});
   
 //==========Disconnects==========
-	//On telescope disconnect
+	//On Telescope disconnect
 	socket.on('disconnect', function(socket) {
-		telescopeModel.find({
-			socketid: socket
+		telescopeModel.remove({
+			socketid: socketid
+		}, function(err, telescopes) {
+			if (err)
+			console.log('Deleting Error: ' + err);
+		});
+	});
+	//On Client disconnect
+	socket.on('disconnect', function(socket) {
+		clientModel.remove({
+			socketid: socketid
 		}, function(err, telescopes) {
 			if (err)
 			console.log('Deleting Error: ' + err);
