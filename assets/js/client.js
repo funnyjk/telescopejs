@@ -1,9 +1,9 @@
 //==========Socket.io==========
-var urlLink = '107.170.68.139:80';
+var urlLink = '107.170.68.139:8080';
 var socket = io.connect(urlLink);
 
 //===Testing===
-var localLink = '192.168.1.13:80';
+var localLink = '192.168.1.13:8080';
 var socketLocal = io.connect(localLink);
 socketLocal.on('connect', function() {
 	socketLocal.emit('client');
