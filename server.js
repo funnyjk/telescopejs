@@ -132,7 +132,7 @@ io.sockets.on('connection', function(socket) {
 	});
 	//Various Controls
 	socket.on('control', function(control) {
-		tcontrol(control);
+		scontrol(control);
 	});
 	//Console Log incoming information
 	socket.on('test', function(data) {
