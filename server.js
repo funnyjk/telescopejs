@@ -94,10 +94,11 @@ function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
 	var socketid = socket.id;
-	console.log('Socket: ' + socketid + ' Connected');
+	//console.log('Socket: ' + socketid + ' Connected');
 //====Socket.io Connect====
 	//Telescope Connect
 	socket.on('telescope', function(socket) {
+		console.log('Telescope: ' + socketid + ' Connected');
 		//Add to Mongoose
 		var telescope = new telescopeModel();
 		telescope.socketid = socketid;
@@ -107,6 +108,7 @@ io.sockets.on('connection', function(socket) {
 	});
 	//Client Connect
 	socket.on('client', function(socket) {
+		console.log('Client: ' + socketid + ' Connected');
 		//Add to Mongoose
 		var client = new clientModel();
 		client.socketid = socketid;
