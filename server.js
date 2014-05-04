@@ -94,7 +94,7 @@ function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
 	var socketid = socket.id;
-	//console.log('Socket: ' + socketid + ' Connected');
+// 	console.log('Socket: ' + socketid + ' Connected');
 //====Socket.io Connect====
 	//Telescope Connect
 	socket.on('telescope', function(socket) {
@@ -139,6 +139,7 @@ io.sockets.on('connection', function(socket) {
 		}, function(err, telescopes) {
 			if (err)
 			console.log('Deleting Error: ' + err);
+			console.log('Telescope: ' + socketid + ' Disconnected');
 		});
 	//On Client Disconnect
 		clientModel.remove({
@@ -146,8 +147,9 @@ io.sockets.on('connection', function(socket) {
 		}, function(err, telescopes) {
 			if (err)
 			console.log('Deleting Error: ' + err);
+			console.log('Client: ' + socketid + ' Disconnected');
 		});
-		console.log('Socket: ' + socketid + ' Disconnected');
+// 		console.log('Socket: ' + socketid + ' Disconnected');
 	});
 });
 
