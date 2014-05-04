@@ -139,17 +139,15 @@ io.sockets.on('connection', function(socket) {
 		}, function(err, telescopes) {
 			if (err)
 			console.log('Deleting Error: ' + err);
-			console.log('Telescope: ' + socketid + ' Disconnected');
 		});
 	//On Client Disconnect
 		clientModel.remove({
 			socketid: socketid
-		}, function(err, telescopes) {
+		}, function(err, clients) {
 			if (err)
 			console.log('Deleting Error: ' + err);
-			console.log('Client: ' + socketid + ' Disconnected');
 		});
-// 		console.log('Socket: ' + socketid + ' Disconnected');
+		console.log('Socket: ' + socketid + ' Disconnected');
 	});
 });
 
