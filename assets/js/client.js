@@ -24,6 +24,11 @@ function speed(speed) {
 	socket.emit('speed', speed);
 	socket.emit('test', speed);
 }
+//Various Controls
+function control(control) {
+	socket.emit('control', control);
+	socket.emit('test', control);
+}
 //====Testing====
 //Send Destination
 function dest(data) {

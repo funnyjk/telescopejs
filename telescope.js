@@ -43,6 +43,20 @@ var tspeed = {
 	M: function () { serial.write(':RM#'); },
 	S: function () { serial.write(':RS#'); }
 };
+//Various Controls
+var tcontrol = {
+	clock: function() { serial.write(':Gc#'); }
+}
+
+//===Various Functions===
+function hex2a(hexx) {
+	var hexa = hexx.split(' ').join('');
+	var hex = hexa.toString();
+	var str = '';
+	for (var i = 0, i < hex.length; i += 2)
+		str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+	return str;
+}
 
 //==========Testing Area==========
 // testing for querying location movement
@@ -56,10 +70,11 @@ var tspeed = {
 // 	dec: function () { serial.write(':Sas90*53#'); },
 // 	go: function () { serial.write(':MA#'); }
 // };
-// //View Serial Data
-// serial.on('data', function(data) {
-// 	console.log(data);
-// });
+//View Serial Data
+serial.on('data', function(data) {
+	var parsed = hex2a(data);
+	console.log(parsed);
+});
 
 //====================Socket.io====================
 //Socket.io-client connection information
@@ -79,8 +94,12 @@ socket.on('connect', function(){
 	socket.on('tspeed', function(speed) {
 		tspeed[speed]();
 	});
+	//Various Controls
+	socket.on('tcontrol', function(control) {
+		tcontrol[control]();
+	});
 	//console.log tests socket.io
 	socket.on('test', function(data) {
 		console.log(data);
-	}); 
+	});
 });

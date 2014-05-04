@@ -87,8 +87,12 @@ app.listen(port, function() {
 //====Telescope====
 //==Slew in direction==
 function smovement(tmovement) {  io.sockets.emit('tmove',tmovement); }
+
 //==Set Telescope Speed==
 function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
+
+//==Various Controls==
+function scontrol(tcontrol) { io.socket.emit('tcontrol', tcontrol); }
 
 //====================Socket.io====================
 io.set('log level', 1);
@@ -125,6 +129,10 @@ io.sockets.on('connection', function(socket) {
 	//Set Speed === Client === Telescope
 	socket.on('speed', function(speed) {
 		sspeed(speed);
+	});
+	//Various Controls
+	socket.on('control', function(control) {
+		tcontrol(control);
 	});
 	//Console Log incoming information
 	socket.on('test', function(data) {
