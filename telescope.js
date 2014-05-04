@@ -46,7 +46,7 @@ var tspeed = {
 //Various Controls
 var tcontrol = {
 	clock: function() { serial.write(':Gc#'); },
-	test: function(data) { serial.write(test); }
+	test: function(data) { console.log(data); }
 }
 
 //===Various Functions===
@@ -98,6 +98,7 @@ socket.on('connect', function(){
 	//Various Controls
 	socket.on('tcontrol', function(control,mod) {
 		tcontrol[control](mod);
+		console.log(mod);
 	});
 	//console.log tests socket.io
 	socket.on('test', function(data) {
