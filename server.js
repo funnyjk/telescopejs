@@ -33,7 +33,7 @@ var clientSchema = new Schema({
 
 //====Define Model====
 //Telescope Schema
-var telescopeModel = mongoose.model('telescope',telescopeSchema);
+var telescopeModel = mongoose.model('telescope', telescopeSchema);
 //Client Schema
 var clientModel = mongoose.model('client', clientSchema);	
 

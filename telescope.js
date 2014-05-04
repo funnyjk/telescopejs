@@ -5,7 +5,7 @@ var	serialport = require("serialport"),
 	socketIO = require('socket.io-client');
 
 //==========Variables==========
-var	socketServer = '107.170.68.139:5000';
+var	socketServer = '107.170.68.139:8080';
 
 //==========SERIAL Configuration==========
 var portName = '/dev/ttyUSB0';
