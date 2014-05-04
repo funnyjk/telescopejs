@@ -25,8 +25,8 @@ function speed(speed) {
 	socket.emit('test', speed);
 }
 //Various Controls
-function control(control) {
-	socket.emit('control', control);
+function control(control, mod) {
+	socket.emit('control', control, mod);
 	socket.emit('test', control);
 }
 //====Testing====
