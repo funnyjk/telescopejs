@@ -45,13 +45,14 @@ var tspeed = {
 };
 //Various Controls
 var tcontrol = {
-	clock: function() { serial.write(':Gc#'); }
+	clock: function() { serial.write(':Gc#'); },
+	test: function(data) { serial.write(test); }
 }
 
 //===Various Functions===
 function hex2a(hexx) {
-	var hexa = hexx.split(' ').join('');
-	var hex = hexa.toString();
+	var hexa = hexx.toString();
+	var hex = hexa.split(' ').join('');
 	var str = '';
 	for (var i = 0; i < hex.length; i += 2)
 		str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
@@ -95,8 +96,8 @@ socket.on('connect', function(){
 		tspeed[speed]();
 	});
 	//Various Controls
-	socket.on('tcontrol', function(control) {
-		tcontrol[control]();
+	socket.on('tcontrol', function(control,mod) {
+		tcontrol[control](mod);
 	});
 	//console.log tests socket.io
 	socket.on('test', function(data) {
