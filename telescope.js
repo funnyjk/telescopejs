@@ -46,19 +46,20 @@ var tspeed = {
 //Various Controls
 var tcontrol = {
 	clock: function() { serial.write(':Gc#'); },
-	test: function(data) { console.log(data); }
+	test: function(data) { serial.write(data, function(err) {
+		if(err)
+		console.log('err: ' + err);}); }
 }
 
 //===Various Functions===
-function hex2a(hexx) {
-	var hexa = hexx.toString();
-	var hex = hexa.split(' ').join('');
-	var str = '';
-	for (var i = 0; i < hex.length; i += 2)
-		str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-	return str;
+var str = ""
+function fix(data) {
+	str += data;
+	console.log('String: ' + str);
 }
-
+function reset_str() {
+	str = "";
+}
 //==========Testing Area==========
 // testing for querying location movement
 // function location() {
@@ -73,8 +74,8 @@ function hex2a(hexx) {
 // };
 //View Serial Data
 serial.on('data', function(data) {
-	var parsed = hex2a(data);
-	console.log(parsed);
+// 	console.log('Data: ' + data);
+	fix(data);
 });
 
 //====================Socket.io====================
@@ -96,9 +97,9 @@ socket.on('connect', function(){
 		tspeed[speed]();
 	});
 	//Various Controls
-	socket.on('tcontrol', function(control,mod) {
-		tcontrol[control](mod);
-		console.log(mod);
+	socket.on('tcontrol', function(control) {
+		reset_str();
+		tcontrol.test(control);
 	});
 	//console.log tests socket.io
 	socket.on('test', function(data) {
