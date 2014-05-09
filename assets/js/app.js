@@ -44,4 +44,4 @@ function selectClient(id) {
 }
 socket.on('clientTest', function(data) {
 	console.log(data);
-}
+});
