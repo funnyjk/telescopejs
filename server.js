@@ -95,7 +95,7 @@ function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 function scontrol(tcontrol, modify) { io.sockets.emit('tcontrol', tcontrol, modify); }
 
 //==testing sockets==
-function clientTest(client, data) { client[id].emit('clientTest', data); }
+function clientTest(id, data) { id.emit('clientTest', data); }
 
 //====================Socket.io====================
 io.set('log level', 1);
@@ -127,8 +127,6 @@ io.sockets.on('connection', function(socket) {
 //====Various Sockets====
 	//Directional Movement === Client === Telescope
 	socket.on('direction', function(direction, id) {
-		var client = {};
-		client[id] = socket;
 		smovement(direction);
 		clientTest(client, direction);
 		console.log('id: ' + id + ' direction: ' + direction);
