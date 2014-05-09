@@ -129,6 +129,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('direction', function(direction, id) {
 		smovement(direction);
 		clientTest(id,direction);
+		console.log('id: ' + id + ' direction: ' + direction);
 	});
 	//Set Speed === Client === Telescope
 	socket.on('speed', function(speed) {
