@@ -23,7 +23,7 @@
 					<!--for each telescope-->
 					<div ng-repeat="client in clients">
 						<label>
-							<input type="radio" ng-click="selectClient(client.socketid)"> client {{ client.socketid }}
+							<input type="radio" name="clientRadio" onclick="selectClient('{{ client.socketid }}');" /> client {{ client.socketid }}
 						</label>
 					</div>
 				</div>	

@@ -78,7 +78,7 @@ app.get('/api/test', function(req, res) {
 });
 
 //==========Express Port==========
-var port = 80;
+var port = 3000;
 app.listen(port, function() {
 	console.log("Listening on " + port);
 });
@@ -93,6 +93,9 @@ function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 
 //==Various Controls==
 function scontrol(tcontrol, modify) { io.sockets.emit('tcontrol', tcontrol, modify); }
+
+//==testing sockets==
+function clientTest(id, data) { io.sockets.socket(id).emit('clientTest', data); }
 
 //====================Socket.io====================
 io.set('log level', 1);
@@ -123,8 +126,9 @@ io.sockets.on('connection', function(socket) {
 	  
 //====Various Sockets====
 	//Directional Movement === Client === Telescope
-	socket.on('direction', function(direction) {
+	socket.on('direction', function(direction, id) {
 		smovement(direction);
+		clientTest(id,direction);
 	});
 	//Set Speed === Client === Telescope
 	socket.on('speed', function(speed) {
