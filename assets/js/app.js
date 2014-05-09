@@ -19,7 +19,7 @@ socket.on('connect', function() {
 //==========Functions==========
 //Send Direction 
 function direction(direction) {
-	socket.emit('direction', direction);
+	socket.emit('direction', direction, clientID);
 	socket.emit('test', direction);
 	console.log(direction + " : " + clientID);
 }
