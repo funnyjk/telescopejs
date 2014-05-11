@@ -11,6 +11,8 @@ socketLocal.on('connect', function() {
 
 //Variables
 var clientID = "";
+var control = document.getElementById("control");
+var mod = document.getElementById("mod");
 
 //====On Conntection====
 socket.on('connect', function() {
@@ -45,3 +47,10 @@ function selectClient(id) {
 socket.on('clientTest', function(data) {
 	console.log(data);
 });
+//=Test=
+sendButton.onclick = function() {
+	var controls = control.value;
+	var modif = mod.value;
+	control(controls, modif);
+}
+	

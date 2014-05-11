@@ -55,7 +55,11 @@ var tcontrol = {
 var str = ""
 function fix(data) {
 	str += data;
-	console.log('String: ' + str);
+	if (str.indexof('#') > -1) {
+		console.log('Save this value: ' + str);
+	} else {
+	console.log('Do not save: ' + str);
+	}
 }
 function reset_str() {
 	str = "";
@@ -105,4 +109,8 @@ socket.on('connect', function(){
 	socket.on('test', function(data) {
 		console.log(data);
 	});
+});
+//===Socket.io Disconnect===
+socket.on('disconnect', function() { 
+	tdirection[stop]();
 });
