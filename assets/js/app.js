@@ -49,7 +49,7 @@ socket.on('clientTest', function(data) {
 	console.log(data);
 });
 //=Test=
-sendButton.onclick = function() {
+function send() {
 	var controls = controlField.value;
 	var modif = modField.value;
 	control(controls, modif);
