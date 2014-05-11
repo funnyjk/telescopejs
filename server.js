@@ -119,7 +119,7 @@ io.sockets.on('connection', function(socket) {
 		console.log('Client: ' + socketid + ' Connected');
 		//Add to Mongoose
 		var client = new clientModel();
-		client.socketid = socket;
+		client.socketid = socket.id;
 		client.save(function(err) {
 			if (err) console.log(err);
 		});
