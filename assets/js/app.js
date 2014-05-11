@@ -11,8 +11,6 @@ socketLocal.on('connect', function() {
 
 //Variables
 var clientID = "";
-var controlField = document.getElementById("control");
-var modField = document.getElementById("mod");
 var sendButton = document.getElementById("send");
 
 //====On Conntection====
@@ -50,8 +48,8 @@ socket.on('clientTest', function(data) {
 });
 //=Test=
 function send() {
-	var controls = controlField.value;
-	var modif = modField.value;
+	var controls = document.getElementById("control").value;
+	var modif = document.getElementById("mod").value;
 	control(controls, modif);
 }
 
