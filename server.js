@@ -101,7 +101,7 @@ var clients = {};
 //====================Socket.io====================
 io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
-	var socketid = socket;
+	var socketid = socket.id;
 // 	console.log('Socket: ' + socketid + ' Connected');
 //====Socket.io Connect====
 	//Telescope Connect
@@ -119,7 +119,7 @@ io.sockets.on('connection', function(socket) {
 		console.log('Client: ' + socketid + ' Connected');
 		//Add to Mongoose
 		var client = new clientModel();
-		client.socketid = socketid;
+		client.socketid = socket;
 		client.save(function(err) {
 			if (err) console.log(err);
 		});
