@@ -95,13 +95,13 @@ function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 function scontrol(tcontrol, modify) { io.sockets.emit('tcontrol', tcontrol, modify); }
 
 //==testing sockets==
-function clientTest(id, data) { io.sockets.socket(id).emit('clientTest', data); }
+function clientTest(id, data) { id.emit('clientTest', data); }
 
 var clients = {};
 //====================Socket.io====================
 io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
-	var socketid = socket.id;
+	var socketid = socket;
 // 	console.log('Socket: ' + socketid + ' Connected');
 //====Socket.io Connect====
 	//Telescope Connect
@@ -129,7 +129,7 @@ io.sockets.on('connection', function(socket) {
 	//Directional Movement === Client === Telescope
 	socket.on('direction', function(direction, id) {
 		smovement(direction);
-// 		clientTest(id, direction);
+ 		clientTest(id, direction);
 		console.log('id: ' + id + ' direction: ' + direction);
 	});
 	//Set Speed === Client === Telescope
