@@ -13,6 +13,7 @@ socketLocal.on('connect', function() {
 var clientID = "";
 var control = document.getElementById("control");
 var mod = document.getElementById("mod");
+var sendButton = document.getElementById("send");
 
 //====On Conntection====
 socket.on('connect', function() {
@@ -53,4 +54,5 @@ sendButton.onclick = function() {
 	var modif = mod.value;
 	control(controls, modif);
 }
+
 	
