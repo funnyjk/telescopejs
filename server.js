@@ -95,7 +95,7 @@ function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
 function scontrol(tcontrol, modify) { io.sockets.emit('tcontrol', tcontrol, modify); }
 
 //==testing sockets==
-function clientTest(id, data) { id.emit('clientTest', data); }
+function clientTest(id, data) { io.id.emit('clientTest', data); }
 
 var clients = {};
 //====================Socket.io====================
