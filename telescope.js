@@ -52,13 +52,14 @@ var tcontrol = {
 }
 
 //===Various Functions===
-var str = ""
+var str = "";
 function fix(data) {
 	str += data;
-	if (str.indexof('#') > -1) {
-		console.log('Save this value: ' + str);
+	if (str.indexOf('#') > -1) {
+		var res = str.replace('#','');
+		console.log('Save this value: ' + res);
 	} else {
-	console.log('Do not save: ' + str);
+// 	console.log('Do not save: ' + str);
 	}
 }
 function reset_str() {
@@ -101,9 +102,9 @@ socket.on('connect', function(){
 		tspeed[speed]();
 	});
 	//Various Controls
-	socket.on('tcontrol', function(control) {
+	socket.on('tcontrol', function(control, mod) {
 		reset_str();
-		tcontrol.test(control);
+		tcontrol[control](mod);
 	});
 	//console.log tests socket.io
 	socket.on('test', function(data) {
