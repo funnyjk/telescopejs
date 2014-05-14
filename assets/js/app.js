@@ -32,7 +32,7 @@ function speed(speed) {
 }
 //Various Controls
 function control(control, mod) {
-	socket.emit('control', control, mod);
+	socket.emit('control', telescopeID, control, mod);
 	socket.emit('test', mod);
 }
 //====Testing====

@@ -94,7 +94,7 @@ function smovement(id, tmovement) {  io.sockets.socket(id).emit('tmove',tmovemen
 function sspeed(id, tspeed) { io.sockets.socket(id).emit('tspeed',tspeed); }
 
 //==Various Controls==
-function scontrol(tcontrol, modify) { io.sockets.emit('tcontrol', tcontrol, modify); }
+function scontrol(id, tcontrol, modify) { io.sockets.socket(id).emit('tcontrol', tcontrol, modify); }
 
 //==testing sockets==
 function clientTest(id, data) { io.sockets.socket(id).emit('clientTest', data); }
@@ -139,8 +139,8 @@ io.sockets.on('connection', function(socket) {
 		sspeed(id, speed);
 	});
 	//Various Controls
-	socket.on('control', function(control, mod) {
-		scontrol(control, mod);
+	socket.on('control', function(id, control, mod) {
+		scontrol(id, control, mod);
 	});
 	//Console Log incoming information
 	socket.on('test', function(data) {
