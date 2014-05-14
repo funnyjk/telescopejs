@@ -21,7 +21,9 @@
 		<link rel="stylesheet" href="css/skel-noscript.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<link rel="stylesheet" href="css/style-desktop.css" />
-	</noscript>		
+		<link rel="stylesheet" href="css/css.css" />
+	</noscript>	
+	
 </head>
 <body>
 	<nav id="nav">
@@ -68,7 +70,7 @@
 		<div id="telescope-list" class="row">
 			<div class="col-sm-4 col-sm-offset-4">
 				<!--for each telescope-->
-				<select ng-model="telescope" ng-options="telescope.socketid for telescope in telescopes" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}')">Telescope</select>
+				<select class="styled-select" ng-model="telescope" ng-options="telescope.socketid for telescope in telescopes" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}')">Telescope</select>
 			</div>	
 		</div>
 		<h1 class="jquery">Controls</h1>
