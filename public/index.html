@@ -64,6 +64,13 @@
 			</div>
 		<div class="4u">
 			<article id="control">
+		<!-- testing telescope list -->
+		<div id="telescope-list" class="row">
+			<div class="col-sm-4 col-sm-offset-4">
+				<!--for each telescope-->
+				<select ng-model="telescope" ng-options="telescope.socketid for telescope in telescopes" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}')">Telescope</select>
+			</div>	
+		</div>
 		<h1 class="jquery">Controls</h1>
 			<li class="button button-alt" onclick="direction('north')">North</li>
 			<li class="button button-alt" onclick="direction('south')">South</li>
@@ -79,20 +86,6 @@
 		</article>
 		</div>
 	</div>
-	</div>
-	<!-- testing telescope list -->
-		<div id="telescope-list" class="row">
-			<div class="col-sm-4 col-sm-offset-4">
-				<!--for each telescope-->
-				<select ng-model="telescope" ng-options="telescope.socketid for telescope in telescopes" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}')">
-				</select>
-				<!--<div ng-repeat="telescope in telescopes">
-					<label>
-						<input type="radio" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}');" /> telescope {{ telescope.socketid }}
-					</label>
-				</div>-->
-			</div>	
-		</div>
 	</article>
 </div>
 <div class="wrapper wrapper-style2">
