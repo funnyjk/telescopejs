@@ -41,7 +41,18 @@
 			Control: <input type="text" id="control"><br>
 			Modification: <input type="text" id="mod"><br>
 			<li id="send" onclick="send()">Send</li>
-		</form>
+		</form>	
+		<div id="client-list" class="row">
+			<div class="col-sm-4 col-sm-offset-4">
+				<!--for each telescope-->
+<!-- 				ng-repeat="client in clients" -->
+				<select ng-model="client" ng-options="client.socketid for client in clients" name="clientRadio" onclick="selectClient('{{ client.socketid }}')">
+<!-- 					<label> -->
+<!-- 						<input type="radio" name="clientRadio" onclick="selectClient('{{ client.socketid }}');" /> client {{ client.socketid }} -->
+<!-- 					</label> -->
+				</select>
+			</div>	
+		</div>
 		<div id="telescope-list" class="row">
 			<div class="col-sm-4 col-sm-offset-4">
 				<!--for each telescope-->
@@ -52,6 +63,7 @@
 				</div>
 			</div>	
 		</div>
+			
 		</form>
 	</body>
 </html>
