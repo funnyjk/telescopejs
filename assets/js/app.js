@@ -11,6 +11,7 @@ socketLocal.on('connect', function() {
 
 //Variables
 var clientID = "";
+var telescopeID = "";
 var sendButton = document.getElementById("send");
 
 //====On Conntection====
@@ -20,9 +21,9 @@ socket.on('connect', function() {
 //==========Functions==========
 //Send Direction 
 function direction(direction) {
-	socket.emit('direction', direction, clientID);
+	socket.emit('direction', direction, telescopeID);
 	socket.emit('test', direction);
-	console.log(direction + " : " + clientID);
+	console.log(direction + " : " + telescopeID);
 }
 //Send Speed
 function speed(speed) {
@@ -42,6 +43,9 @@ function dest(data) {
 }
 function selectClient(id) {
 	clientID = id;
+}
+function selectTelescope(id) {
+	telescopeID = id;
 }
 socket.on('clientTest', function(data) {
 	console.log(data);

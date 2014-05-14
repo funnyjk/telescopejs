@@ -88,7 +88,7 @@ app.listen(port, function() {
 //====================Functions====================
 //====Telescope====
 //==Slew in direction==
-function smovement(tmovement) {  io.sockets.emit('tmove',tmovement); }
+function smovement(id, tmovement) {  io.sockets.socket(id).emit('tmove',tmovement); }
 
 //==Set Telescope Speed==
 function sspeed(tspeed) { io.sockets.emit('tspeed',tspeed); }
@@ -129,9 +129,9 @@ io.sockets.on('connection', function(socket) {
 	  
 //====Various Sockets====
 	//Directional Movement === Client === Telescope
-	socket.on('direction', function(direction, id) {
-		smovement(direction);
- 		clientTest(id, direction);
+	socket.on('direction', function(id, direction) {
+		smovement(id, direction);
+ 		//clientTest(id, direction);
 		console.log('id: ' + id + ' direction: ' + direction);
 	});
 	//Set Speed === Client === Telescope
