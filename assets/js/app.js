@@ -21,7 +21,7 @@ socket.on('connect', function() {
 //==========Functions==========
 //Send Direction 
 function direction(direction) {
-	socket.emit('direction', direction, telescopeID);
+	socket.emit('direction',  telescopeID, direction);
 	socket.emit('test', direction);
 	console.log(direction + " : " + telescopeID);
 }
