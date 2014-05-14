@@ -22,13 +22,13 @@ socket.on('connect', function() {
 //Send Direction 
 function direction(direction) {
 	socket.emit('direction',  telescopeID, direction);
-	socket.emit('test', direction);
+// 	socket.emit('test', direction);
 	console.log(direction + " : " + telescopeID);
 }
 //Send Speed
 function speed(speed) {
-	socket.emit('speed', speed);
-	socket.emit('test', speed);
+	socket.emit('speed', telescopeID, speed);
+// 	socket.emit('test', speed);
 }
 //Various Controls
 function control(control, mod) {
