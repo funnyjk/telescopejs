@@ -1,268 +1,300 @@
-//SERVER
-var WebSocketServer = require('ws').Server
+//CLIENT
 
-var iolog = function() {};
+ // Fallbacks for vendor-specific variables until the spec is finalized.
+	
+var PeerConnection = window.PeerConnection || window.webkitPeerConnection00 || window.webkitRTCPeerConnection;
+var URL = window.URL || window.webkitURL || window.msURL || window.oURL;
+var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
-for (var i = 0; i < process.argv.length; i++) {
-  var arg = process.argv[i];
-  if (arg === "-debug") {
-    iolog = function(msg) {
-      console.log(msg);
-    };
-    console.log('Debug mode on!');
-  }
-}
+(function() {
 
-
-// Used for callback publish and subscribe
-if (typeof rtc === "undefined") {
-  var rtc = {};
-}
-//Array to store connections
-rtc.sockets = [];
-
-rtc.rooms = {};
-
-// Holds callbacks for certain events.
-rtc._events = {};
-
-rtc.on = function(eventName, callback) {
-  rtc._events[eventName] = rtc._events[eventName] || [];
-  rtc._events[eventName].push(callback);
-};
-
-rtc.fire = function(eventName, _) {
-  var events = rtc._events[eventName];
-  var args = Array.prototype.slice.call(arguments, 1);
-
-  if (!events) {
-    return;
-  }
-
-  for (var i = 0, len = events.length; i < len; i++) {
-    events[i].apply(null, args);
-  }
-};
-
-module.exports.listen = function(server) {
-  var manager;
-  if (typeof server === 'number') { 
-    manager = new WebSocketServer({
-        port: server
-      });
+  var rtc;
+  if ('undefined' === typeof module) {
+    rtc = this.rtc = {};
   } else {
-    manager = new WebSocketServer({
-      server: server
+    rtc = module.exports = {};
+  }
+
+ 
+  // Holds a connection to the server.
+  rtc._socket = null;
+
+  // Holds callbacks for certain events.
+  rtc._events = {};
+
+  rtc.on = function(eventName, callback) {
+    rtc._events[eventName] = rtc._events[eventName] || [];
+    rtc._events[eventName].push(callback);
+  };
+
+  rtc.fire = function(eventName, _) {
+    var events = rtc._events[eventName];
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    if (!events) {
+      return;
+    }
+
+    for (var i = 0, len = events.length; i < len; i++) {
+      events[i].apply(null, args);
+    }
+  };
+
+  // Holds the STUN/ICE server to use for PeerConnections.
+  rtc.SERVER = {iceServers:[{url:"stun:stun.l.google.com:19302"}]};
+
+  // Referenc e to the lone PeerConnection instance.
+  rtc.peerConnections = {};
+
+  // Array of known peer socket ids
+  rtc.connections = [];
+  // Stream-related variables.
+  rtc.streams = [];
+  rtc.numStreams = 0;
+  rtc.initializedStreams = 0;
+
+  /**
+   * Connects to the websocket server.
+   */
+  rtc.connect = function(server, room) {
+    room = room || ""; // by default, join a room called the blank string
+    rtc._socket = new WebSocket(server);
+
+    rtc._socket.onopen = function() {
+
+      rtc._socket.send(JSON.stringify({
+        "eventName": "join_room",
+        "data":{
+          "room": room
+        }
+      }), function(error){
+          if(error){console.log(error);}
+        });
+
+      rtc._socket.onmessage = function(msg) {
+        var json = JSON.parse(msg.data);
+        rtc.fire(json.eventName, json.data);
+      };
+
+      rtc._socket.onerror = function(err) {
+        console.log('onerror');
+        console.log(err);
+      };
+
+      rtc._socket.onclose = function(data) {
+        rtc.fire('disconnect stream', rtc._socket.id);
+        delete rtc.peerConnections[rtc._socket.id];
+      };
+
+      rtc.on('get_peers', function(data) {
+        rtc.connections = data.connections;
+        // fire connections event and pass peers
+        rtc.fire('connections', rtc.connections);
+      });
+
+      rtc.on('receive_ice_candidate', function(data) {
+    	var candidate = new RTCIceCandidate(data);
+    	rtc.peerConnections[data.socketId].addIceCandidate(candidate);
+        rtc.fire('receive ice candidate', candidate);
+      });
+
+      rtc.on('new_peer_connected', function(data) {
+        rtc.connections.push(data.socketId);
+
+        var pc = rtc.createPeerConnection(data.socketId);
+        for (var i = 0; i < rtc.streams.length; i++) {
+          var stream = rtc.streams[i];
+          pc.addStream(stream);
+        }
+      });
+
+      rtc.on('remove_peer_connected', function(data) {  
+        rtc.fire('disconnect stream', data.socketId);
+        delete rtc.peerConnections[data.socketId];
+      });
+
+      rtc.on('receive_offer', function(data) {
+        rtc.receiveOffer(data.socketId, data.sdp);
+        rtc.fire('receive offer', data);
+      });
+
+      rtc.on('receive_answer', function(data) {
+        rtc.receiveAnswer(data.socketId, data.sdp);
+        rtc.fire('receive answer', data);
+      });
+
+      rtc.fire('connect');
+    };
+  };
+
+
+  rtc.sendOffers = function() {
+    for (var i = 0, len = rtc.connections.length; i < len; i++) {
+      var socketId = rtc.connections[i];
+      rtc.sendOffer(socketId);
+    }
+  }
+
+  rtc.onClose = function(data) {
+    rtc.on('close_stream', function() {
+      rtc.fire('close_stream', data);
     });
   }
 
-  manager.rtc = rtc;
-  attachEvents(manager);
-  return manager;
-};
+  rtc.createPeerConnections = function() {
+    for (var i = 0; i < rtc.connections.length; i++) {
+      rtc.createPeerConnection(rtc.connections[i]);
+    }
+  };
 
-function attachEvents(manager) {
+  rtc.createPeerConnection = function(id) {
+    console.log('createPeerConnection');
+    var pc = rtc.peerConnections[id] = new PeerConnection(rtc.SERVER);
+    pc.onicecandidate = function(event) {
+      if (event.candidate) {
+         rtc._socket.send(JSON.stringify({
+           "eventName": "send_ice_candidate",
+           "data": {
+              "label": event.candidate.label,
+              "candidate": event.candidate.candidate,
+              "socketId": id
+           }
+         }), function(error){
+           if(error){console.log(error);}
+         });
+       }
+       rtc.fire('ice candidate', event.candidate);
+     };
 
-  manager.on('connection', function(socket) {
-    iolog('connect');
+    pc.onopen = function() {
+      // TODO: Finalize this API
+      rtc.fire('peer connection opened');
+    };
 
-    socket.id = id();
-    iolog('new socket got id: ' + socket.id);
+    pc.onaddstream = function(event) {
+      // TODO: Finalize this API
+      rtc.fire('add remote stream', event.stream, id);
+    };
+    return pc;
+  };
 
-    rtc.sockets.push(socket);
-
-    socket.on('message', function(msg) {
-      var json = JSON.parse(msg);
-      rtc.fire(json.eventName, json.data, socket);
-    });
-
-    socket.on('close', function() {
-      iolog('close');
-
-      // find socket to remove
-      var i = rtc.sockets.indexOf(socket);
-      // remove socket
-      rtc.sockets.splice(i, 1);
-
-      // remove from rooms and send remove_peer_connected to all sockets in room
-      var room;
-      for (var key in rtc.rooms) {
-
-        room = rtc.rooms[key];
-        var exist = room.indexOf(socket.id);
-
-        if (exist !== -1) {
-          room.splice(room.indexOf(socket.id), 1);
-          for (var j = 0; j < room.length; j++) {
-            console.log(room[j]);
-            var soc = rtc.getSocket(room[j]);
-            soc.send(JSON.stringify({
-              "eventName": "remove_peer_connected",
-              "data": {
-                "socketId": socket.id
-              }
-            }), function(error) {
-              if (error) {
-                console.log(error);
-              }
-            });
-          }
-          break;
-        }
-      }
-      // we are leaved the room so lets notify about that
-      rtc.fire('room_leave', room, socket.id);
-      
-      // call the disconnect callback
-      rtc.fire('disconnect', rtc);
-
-    });
-    
-
-    // call the connect callback
-    rtc.fire('connect', rtc);
-
-  });
-
-  // manages the built-in room functionality
-  rtc.on('join_room', function(data, socket) {
-    iolog('join_room');
-
-    var connectionsId = [];
-    var roomList = rtc.rooms[data.room] || [];
-
-    roomList.push(socket.id);
-    rtc.rooms[data.room] = roomList;
-
-
-    for (var i = 0; i < roomList.length; i++) {
-      var id = roomList[i];
-
-      if (id == socket.id) {
-        continue;
-      } else {
-
-        connectionsId.push(id);
-        var soc = rtc.getSocket(id);
-
-        // inform the peers that they have a new peer
-        if (soc) {
-          soc.send(JSON.stringify({
-            "eventName": "new_peer_connected",
-            "data":{
-              "socketId": socket.id
+  rtc.sendOffer = function(socketId) {
+    var pc = rtc.peerConnections[socketId];
+    pc.createOffer( function(session_description) {
+    pc.setLocalDescription(session_description);
+    rtc._socket.send(JSON.stringify({
+        "eventName": "send_offer",
+        "data":{
+            "socketId": socketId,
+            "sdp": session_description
             }
-          }), function(error) {
-            if (error) {
-              console.log(error);
-            }
-          });
+        }), function(error){
+            if(error){console.log(error);
         }
-      }
-    }
-    // send new peer a list of all prior peers
-    socket.send(JSON.stringify({
-      "eventName": "get_peers",
-      "data": {
-        "connections": connectionsId,
-        "you": socket.id
-      }
-    }), function(error) {
-      if (error) {
-        console.log(error);
-      }
+   });
     });
-  });
+  };
 
-  //Receive ICE candidates and send to the correct socket
-  rtc.on('send_ice_candidate', function(data, socket) {
-    iolog('send_ice_candidate');
-    var soc = rtc.getSocket(data.socketId);
 
-    if (soc) {
-      soc.send(JSON.stringify({
-        "eventName": "receive_ice_candidate",
-        "data": {
-          "label": data.label,
-          "candidate": data.candidate,
-          "socketId": socket.id
+  rtc.receiveOffer = function(socketId, sdp) {
+    var pc = rtc.peerConnections[socketId];
+    pc.setRemoteDescription(new RTCSessionDescription(sdp));
+    rtc.sendAnswer(socketId);
+  };
+
+
+  rtc.sendAnswer = function(socketId) {
+    var pc = rtc.peerConnections[socketId];
+    pc.createAnswer( function(session_description) {
+    pc.setLocalDescription(session_description);
+    rtc._socket.send(JSON.stringify({
+        "eventName": "send_answer",
+        "data":{
+            "socketId": socketId,
+            "sdp": session_description
+            }
+        }), function(error){
+            if(error){console.log(error);
         }
-      }), function(error) {
-        if (error) {
-          console.log(error);
-        }
-      });
+   });
+    var offer = pc.remoteDescription;
+    });
+  };
 
-      // call the 'recieve ICE candidate' callback
-      rtc.fire('receive ice candidate', rtc);
+
+  rtc.receiveAnswer = function(socketId, sdp) {
+    var pc = rtc.peerConnections[socketId];
+    pc.setRemoteDescription(new RTCSessionDescription(sdp));
+  };
+
+
+  rtc.createStream = function(opt, onSuccess, onFail) {
+    var options;
+    onSuccess = onSuccess ||
+    function() {};
+    onFail = onFail ||
+    function() {};
+
+    if(opt.audio && opt.video){
+      options = {
+        video: true,
+        audio: true
+      };
+    }else if(opt.video){
+      options = {
+        video: true,
+        audio: false
+      };
+    }else if(opt.audio){
+      options = {
+        video: false,
+        audio: true
+      };
+    }else {
+      options = {
+        video: false,
+        audio: false
+      };
     }
-  });
 
-  //Receive offer and send to correct socket
-  rtc.on('send_offer', function(data, socket) {
-    iolog('send_offer');
-    var soc = rtc.getSocket(data.socketId);
+    if (getUserMedia) {
+      rtc.numStreams++;
+      getUserMedia.call(navigator, options, function(stream) {
+        
+        rtc.streams.push(stream);
+        rtc.initializedStreams++;
+        onSuccess(stream);
+        if (rtc.initializedStreams === rtc.numStreams) {
+          rtc.fire('ready');
+        }
+      }, function() {
+        alert("Could not connect stream.");
+        onFail();
+      });
+    } else {
+      alert('webRTC is not yet supported in this browser.');
+    }
+  }
 
-    if (soc) {
-      soc.send(JSON.stringify({
-        "eventName": "receive_offer",
-        "data": {
-          "sdp": data.sdp,
-          "socketId": socket.id
+
+  rtc.addStreams = function() {
+    for (var i = 0; i < rtc.streams.length; i++) {
+      var stream = rtc.streams[i];
+      for (var connection in rtc.peerConnections) {
+        rtc.peerConnections[connection].addStream(stream);
       }
-      }), function(error) {
-        if (error) {
-          console.log(error);
-        }
-      });
     }
-    // call the 'send offer' callback
-    rtc.fire('send offer', rtc);
+  };
+
+
+  rtc.attachStream = function(stream, domId) {
+    document.getElementById(domId).src = URL.createObjectURL(stream);
+  };
+
+  rtc.on('ready', function() {
+    rtc.createPeerConnections();
+    rtc.addStreams();
+    rtc.sendOffers();
   });
 
-  //Receive answer and send to correct socket
-  rtc.on('send_answer', function(data, socket) {
-    iolog('send_answer');
-    var soc = rtc.getSocket( data.socketId);
-
-    if (soc) {
-      soc.send(JSON.stringify({
-        "eventName": "receive_answer",
-        "data" : {
-          "sdp": data.sdp,
-          "socketId": socket.id
-        }
-      }), function(error) {
-        if (error) {
-          console.log(error);
-        }
-      });
-      rtc.fire('send answer', rtc);
-    }
-  });
-}
-
-// generate a 4 digit hex code randomly
-function S4() {
-  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-}
-
-// make a REALLY COMPLICATED AND RANDOM id, kudos to dennis
-function id() {
-  return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-}
-
-rtc.getSocket = function(id) {
-  var connections = rtc.sockets;
-  if (!connections) {
-    // TODO: Or error, or customize
-    return;
-  }
-
-  for (var i = 0; i < connections.length; i++) {
-    var socket = connections[i];
-    if (id === socket.id) {
-      return socket;
-    }
-  }
-};
+}).call(this);
