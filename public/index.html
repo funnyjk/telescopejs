@@ -85,6 +85,7 @@
 			<div class="col-sm-4 col-sm-offset-4">
 				<!--for each telescope-->
 				<select ng-model="telescope" ng-options="telescope.socketid for telescope in telescopes" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}')">
+				</select>
 				<!--<div ng-repeat="telescope in telescopes">
 					<label>
 						<input type="radio" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}');" /> telescope {{ telescope.socketid }}
