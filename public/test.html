@@ -9,6 +9,7 @@
 		<script src="/lib/socket.io.js"></script>
 		<script src="js/app.js"></script>
 		<script src="js/core.js"></script>
+		<script src="lib/webrtc.io.js"></script>
 	</head>
 	<body>
 		<li class="button" onclick="direction('north')"> North </li>
@@ -17,6 +18,26 @@
 		<li class="button" onclick="direction('west')"> West </li>
 		<li class="button" onclick="direction('stop')"> Stop </li>
 		<br>
+		<video id="local" autoplay="autoplay"></video>
+		<video id="remote" autoplay="autoplay"></video>
+		<script>
+
+  // note: make sure hostname available to all connecting clients
+  // (ie. probably not `localhost`)
+  rtc.connect('ws://192.168.1.18:8001');
+
+  rtc.createStream({"video": true, "audio":false}, function(stream){
+    // get local stream for manipulation
+    rtc.attachStream(stream, 'local');
+  });
+
+  rtc.on('add remote stream', function(stream){
+    // show the remote video
+    rtc.attachStream(stream, 'remote');
+  });
+
+  // more rtc callbacks are available
+</script>
 		<form name="controls">
 			Control: <input type="text" id="control"><br>
 			Modification: <input type="text" id="mod"><br>
