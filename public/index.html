@@ -80,31 +80,17 @@
 		</div>
 	</div>
 	</div>
-		<!-- testing telescope list -->
-		<form name="controls">
-			Control: <input type="text" id="control"><br>
-			Modification: <input type="text" id="mod"><br>
-			<li id="send" onclick="send()">Send</li>
-		</form>
-			<div id="telescope-list" class="row">
-				<div class="col-sm-4 col-sm-offset-4">
-					<!--for each telescope-->
-					<div ng-repeat="telescope in telescopes">
-						<label>
-							<input type="radio" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}');" /> telescope {{ telescope.socketid }}
-						</label>
-					</div>
-				</div>	
-			</div>
-		</form>
-			<div id="client-list" class="row">
-				<div class="col-sm-4 col-sm-offset-4">
-					<!--for each telescope-->
-					<div ng-repeat="client in clients">
-						client {{ client.socketid }}
-					</div>
-				</div>	
-			</div>
+	<!-- testing telescope list -->
+		<div id="telescope-list" class="row">
+			<div class="col-sm-4 col-sm-offset-4">
+				<!--for each telescope-->
+				<div ng-repeat="telescope in telescopes">
+					<label>
+						<input type="radio" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}');" /> telescope {{ telescope.socketid }}
+					</label>
+				</div>
+			</div>	
+		</div>
 	</article>
 </div>
 <div class="wrapper wrapper-style2">
