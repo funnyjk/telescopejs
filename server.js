@@ -6,7 +6,7 @@ var 	express = require('express'),
 	io = require('socket.io').listen(8080),
 	fs = require('fs'),
 	mongoose = require('mongoose'),
-	webRTC = require('webrtc.io').listen(80);
+	webRTC = require('webrtc.io').listen(server);
 
 //====================Express Configure====================
 app.configure(function(){
