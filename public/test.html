@@ -1,69 +1,58 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="telescopejs" ng-controller="mainController">
-	<head>
-		<title>TelescopeJS</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<head>
+	<title>TelescopeJS</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- 		Scripts		 -->
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-		<script src="/lib/socket.io.js"></script>
-		<script src="js/app.js"></script>
-		<script src="js/core.js"></script>
-		<script src="lib/webrtc.io.js"></script>
-	</head>
-	<body>
-		<li class="button" onclick="direction('north')"> North </li>
-		<li class="button" onclick="direction('south')"> South </li>
-		<li class="button" onclick="direction('east')"> East </li>
-		<li class="button" onclick="direction('west')"> West </li>
-		<li class="button" onclick="direction('stop')"> Stop </li>
-		<br>
-<!-- 		<video id="local" autoplay="autoplay"></video> -->
-		<video id="remote" autoplay="autoplay"></video>
-		<script>
-  // note: make sure hostname available to all connecting clients
-  // (ie. probably not `localhost`)
-  rtc.connect('ws://107.170.68.139:80');
-
-  rtc.createStream({"video": true, "audio":false}, function(stream){
-    // get local stream for manipulation
-    rtc.attachStream(stream, 'local');
-  });
-
-  rtc.on('add remote stream', function(stream){
-    // show the remote video
-    rtc.attachStream(stream, 'remote');
-  });
-
-  // more rtc callbacks are available
-</script>
-		<form name="controls">
-			Control: <input type="text" id="control"><br>
-			Modification: <input type="text" id="mod"><br>
-			<li id="send" onclick="send()">Send</li>
-		</form>	
-		<div id="client-list" class="row">
-			<div class="col-sm-4 col-sm-offset-4">
-				<!--for each telescope-->
-<!-- 				ng-repeat="client in clients" -->
-				<select ng-model="client" ng-options="client.socketid for client in clients" name="clientRadio" onclick="selectClient('{{ client.socketid }}')">
-<!-- 					<label> -->
-<!-- 						<input type="radio" name="clientRadio" onclick="selectClient('{{ client.socketid }}');" /> client {{ client.socketid }} -->
-<!-- 					</label> -->
-				</select>
-			</div>	
-		</div>
-		<div id="telescope-list" class="row">
-			<div class="col-sm-4 col-sm-offset-4">
-				<!--for each telescope-->
-				<div ng-repeat="telescope in telescopes">
-					<label>
-						<input type="radio" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}');" /> telescope {{ telescope.socketid }}
-					</label>
-				</div>
-			</div>	
-		</div>
-			
-		</form>
-	</body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+	<script src="/lib/socket.io.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/core.js"></script>
+	<script src="/js/index.js"></script>
+</head>
+<body>
+	<li class="button" onclick="direction('north')"> North </li>
+	<li class="button" onclick="direction('south')"> South </li>
+	<li class="button" onclick="direction('east')"> East </li>
+	<li class="button" onclick="direction('west')"> West </li>
+	<li class="button" onclick="direction('stop')"> Stop </li>
+	<br>
+	<div class="imageDump"></div>
+	<style type="text/css">
+		video {
+			display:none;
+		}
+		.imageDump img {
+			width: 75px
+		}
+	</style>
+	<script type="text/javascript">
+		$(function() {
+			App.connect();
+			App.init('#container');
+		});			
+	</script>
+	<form name="controls">
+		Control: <input type="text" id="control"><br>
+		Modification: <input type="text" id="mod"><br>
+		<li id="send" onclick="send()">Send</li>
+	</form>	
+	<div id="client-list" class="row">
+		<div class="col-sm-4 col-sm-offset-4">
+			<select ng-model="client" ng-options="client.socketid for client in clients" name="clientRadio" onclick="selectClient('{{ client.socketid }}')"></select>
+		</div>	
+	</div>
+	<div id="telescope-list" class="row">
+		<div class="col-sm-4 col-sm-offset-4">
+			<div ng-repeat="telescope in telescopes">
+				<label>
+					<input type="radio" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}');" /> telescope {{ telescope.socketid }}
+				</label>
+			</div>
+		</div>	
+	</div>
+		
+	</form>
+</body>
 </html>

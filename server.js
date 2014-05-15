@@ -5,8 +5,8 @@ var 	express = require('express'),
 	server = require('http').createServer(app),
 	io = require('socket.io').listen(8080),
 	fs = require('fs'),
-	mongoose = require('mongoose'),
-	webRTC = require('webrtc.io').listen(server);
+	mongoose = require('mongoose');
+	//webRTC = require('webrtc.io').listen(server);
 
 //====================Express Configure====================
 app.configure(function(){
@@ -146,7 +146,10 @@ io.sockets.on('connection', function(socket) {
 	socket.on('test', function(data) {
 		console.log(data);
 	});
-  
+	socket.on('sendImage', function (data) {
+		//emit the image
+		socket.broadcast.emit('getImage', data);
+	});
 //==========Disconnects==========
 	//On Telescope disconnect
 	socket.on('disconnect', function(socket) {
