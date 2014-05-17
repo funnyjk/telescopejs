@@ -21,7 +21,7 @@ server.createServer(app);
 //==========Server Ports==========
 var webPort = 80;
 app.listen(webPort, function() {
-	console.log("Listening on " + webort);
+	console.log("Listening on " + webPort);
 });
 
 //====================Mongoose Configure====================
