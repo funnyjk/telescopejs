@@ -9,7 +9,6 @@
 	<script src="/lib/socket.io.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/core.js"></script>
-	<script src="/js/index.js"></script>
 </head>
 <body>
 	<li class="button" onclick="direction('north')"> North </li>
@@ -27,12 +26,6 @@
 			width: 75px
 		}
 	</style>
-	<script type="text/javascript">
-		$(function() {
-			App.connect();
-			App.init('#container');
-		});			
-	</script>
 	<form name="controls">
 		Control: <input type="text" id="control"><br>
 		Modification: <input type="text" id="mod"><br>

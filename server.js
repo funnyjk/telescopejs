@@ -1,8 +1,8 @@
 //====TelescopeJS == Server.js====
 //====================Server Dependencies====================
-var 	express = require('express'),
+var express = require('express'),
 	app = express(),
-	server = require('http').createServer(app),
+	server = require('http'),
 	io = require('socket.io').listen(8080),
 	fs = require('fs'),
 	mongoose = require('mongoose');
@@ -14,6 +14,14 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/assets'));
 	app.use(express.static(__dirname + '/node_modules'));
 	app.use(express.bodyParser());
+});
+//==========Servers==========
+server.createServer(app);
+
+//==========Express Port==========
+var port = 80;
+app.listen(port, function() {
+	console.log("Listening on " + port);
 });
 
 //====================Mongoose Configure====================
@@ -77,12 +85,6 @@ app.get('/api/clients', function(req, res) {
 //Test
 app.get('/api/test', function(req, res) {
 	res.send('hello world');
-});
-
-//==========Express Port==========
-var port = 80;
-app.listen(port, function() {
-	console.log("Listening on " + port);
 });
 
 //====================Functions====================
