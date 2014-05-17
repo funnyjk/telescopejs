@@ -3,7 +3,7 @@
 var express = require('express'),
 	app = express(),
 	server = require('http'),
-	io = require('socket.io'),
+	io = require('socket.io').listen(8080),
 	fs = require('fs'),
 	mongoose = require('mongoose');
 	//webRTC = require('webrtc.io').listen(server);
@@ -15,17 +15,13 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/node_modules'));
 	app.use(express.bodyParser());
 });
-//====================Servers====================
+//==========Servers==========
 server.createServer(app);
+
 //==========Server Ports==========
 var webPort = 80;
-var socketPort = 8080;
-//==========Server Listen==========
 app.listen(webPort, function() {
-	console.log("Listening on " + webPort);
-});
-io.listen(socketPort, function() {
-	console.log("Socket on " + socketPort);
+	console.log("Listening on " + webort);
 });
 
 //====================Mongoose Configure====================
