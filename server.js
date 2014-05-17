@@ -13,7 +13,8 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/public'));
 	app.use(express.static(__dirname + '/assets'));
 	app.use(express.static(__dirname + '/node_modules'));
-	app.use(express.bodyParser());
+	app.use(express.json());
+	app.use(express.urlencoded());
 });
 //==========Servers==========
 server.createServer(app);
