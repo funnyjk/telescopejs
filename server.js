@@ -2,7 +2,7 @@
 //====================Server Dependencies====================
 var express = require('express'),
 	app = express(),
-	server = require('http').createServer(app);,
+	server = require('http').createServer(app),
 	io = require('socket.io').listen(8080),
 	fs = require('fs'),
 	mongoose = require('mongoose');
