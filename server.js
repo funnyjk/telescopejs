@@ -125,7 +125,7 @@ function clientTest(id, data) { io.sockets.socket(id).emit('clientTest', data); 
 
 //========Video Functions========
 function videoBroadcast(data) {	//id,data
-	io.broadcast(data, {binary:true});
+	io.sockets.emit(data, {binary:true});
 }
 
 //====================Socket.io====================
