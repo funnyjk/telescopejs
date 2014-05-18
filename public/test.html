@@ -9,6 +9,7 @@
 	<script src="/lib/socket.io.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/core.js"></script>
+	<script src="js/jsmpg.js"></script>
 </head>
 <body>
 	<li class="button" onclick="direction('north')"> North </li>
@@ -44,8 +45,16 @@
 				</label>
 			</div>
 		</div>	
-	</div>
-		
+	</div>		
 	</form>
+	<script type="text/javascript">
+		var canvas = document.getElementById('videoCanvas');
+		var ctx = canvas.getContext('2d');
+		ctx.fillStyle = '#444';
+		ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
+
+		// Setup the WebSocket connection and start the player
+		var player = new jsmpeg(socket, {canvas:canvas});
+	</script>
 </body>
 </html>

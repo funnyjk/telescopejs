@@ -2,7 +2,7 @@
 //====================Server Dependencies====================
 var express = require('express'),
 	app = express(),
-	server = require('http'),
+	server = require('http').createServer(app);,
 	io = require('socket.io').listen(8080),
 	fs = require('fs'),
 	mongoose = require('mongoose');
@@ -16,14 +16,21 @@ app.configure(function(){
 	app.use(express.json());
 	app.use(express.urlencoded());
 });
-//==========Servers==========
-server.createServer(app);
 
 //==========Server Ports==========
 var webPort = 80;
 app.listen(webPort, function() {
 	console.log("Listening on " + webPort);
 });
+
+//====================Variables====================
+var clients = {};
+
+var STREAM_SECRET = 'test',	//process.argv[2],
+	STREAM_MAGIC_BYTES = 'jsmp';
+//====Stream====
+var width = 320,
+	hight = 240;
 
 //====================Mongoose Configure====================
 mongoose.connect('mongodb://localhost/telescope');
@@ -83,13 +90,26 @@ app.get('/api/clients', function(req, res) {
 		res.json(clients)
 	});
 });
+app.get('/api/video/:secret/:width/:height', funtion(req, res) {
+	width = (req.params.width || 320)|0;
+	height = (req.params.height || 240)|0;
+	
+	if(req.params.secret == STREAM_SECRET) {
+		console.log('Stream Connected');
+		req.on('data', function(data) {
+			videoBroadcast(data);
+		});
+	} else {
+		console.log('Failed to Connect Stream');
+	}
+});
 //Test
 app.get('/api/test', function(req, res) {
 	res.send('hello world');
 });
 
 //====================Functions====================
-//====Telescope====
+//========Telescope========
 //==Slew in direction==
 function smovement(id, tmovement) {  io.sockets.socket(id).emit('tmove',tmovement); }
 
@@ -99,10 +119,14 @@ function sspeed(id, tspeed) { io.sockets.socket(id).emit('tspeed',tspeed); }
 //==Various Controls==
 function scontrol(id, tcontrol, modify) { io.sockets.socket(id).emit('tcontrol', tcontrol, modify); }
 
-//==testing sockets==
+//==Client sockets==
 function clientTest(id, data) { io.sockets.socket(id).emit('clientTest', data); }
 
-var clients = {};
+//========Video Functions========
+function videoBroadcast(data) {	//id,data
+	io.broadcast(data, {binary:true});
+}
+
 //====================Socket.io====================
 io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
@@ -122,6 +146,14 @@ io.sockets.on('connection', function(socket) {
 	//Client Connect
 	socket.on('client', function(socket) {
 		console.log('Client: ' + socketid + ' Connected');
+		
+		//Send Buffer for Stream
+		var streamHeader = new Buffer(8);
+		streamHeader.write(STREAM_MAGIC_BYTES);
+		streamHeader.writeUInt16BE(width, 4);
+		streamHeader.writeUInt16BE(hight, 6);
+		socket.send(streamHeader, {binary:true});
+		
 		//Add to Mongoose
 		var client = new clientModel();
 		client.socketid = socketid;
@@ -172,6 +204,7 @@ io.sockets.on('connection', function(socket) {
 		console.log('Socket: ' + socketid + ' Disconnected');
 	});
 });
-
+//====================HTTP Server for Accepting MPEG Streams====================
+var streamServer = 
 //====================On Start====================
 on_start();
