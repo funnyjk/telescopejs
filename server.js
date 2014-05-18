@@ -25,13 +25,13 @@ app.listen(webPort, function() {
 
 //====================Variables====================
 var clients = {};
+//===Variables for Stream===
 var WEBSOCKET_PORT = 8084;
+var STREAM_SECRET = 'test';	//process.argv[2],
+var STREAM_MAGIC_BYTES = 'jsmp';
 
-var STREAM_SECRET = 'test',	//process.argv[2],
-	STREAM_MAGIC_BYTES = 'jsmp';
-//====Stream====
-var width = 320,
-	height = 240;
+var width = 320;
+var height = 240;
 
 //====================Mongoose Configure====================
 mongoose.connect('mongodb://localhost/telescope');
@@ -91,6 +91,7 @@ app.get('/api/clients', function(req, res) {
 		res.json(clients)
 	});
 });
+//===Send Video in MPEG1===
 app.post('/api/video/:secret/:width/:height', function(req, res) {
 	width = (req.params.width || 320)|0;
 	height = (req.params.height || 240)|0;
@@ -99,6 +100,7 @@ app.post('/api/video/:secret/:width/:height', function(req, res) {
 		console.log('Stream Connected');
 		console.log(req.params.width);
 		req.on('data', function(data) {
+			//send the video over WebSockets
 			videoBroadcast(data);
 		});
 	} else {
