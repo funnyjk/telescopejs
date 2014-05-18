@@ -153,7 +153,7 @@ io.sockets.on('connection', function(socket) {
 		var streamHeader = new Buffer(8);
 		streamHeader.write(STREAM_MAGIC_BYTES);
 		streamHeader.writeUInt16BE(width, 4);
-		streamHeader.writeUInt16BE(hight, 6);
+		streamHeader.writeUInt16BE(height, 6);
 		io.emit('data', streamHeader, {binary:true});
 		
 		//Add to Mongoose
