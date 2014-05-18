@@ -47,6 +47,7 @@
 		</div>	
 	</div>		
 	</form>
+	<canvas id="videoCanvas" width="640" height="480"></canvas>
 	<script type="text/javascript">
 		var canvas = document.getElementById('videoCanvas');
 		var ctx = canvas.getContext('2d');
@@ -54,7 +55,7 @@
 		ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
 
 		// Setup the WebSocket connection and start the player
-		var client = io.connect('ws://telescopejs.info:8004/');
+		var client = new WebSocket('ws://telescopejs.info:8084/');
 		var player = new jsmpeg(client, {canvas:canvas});
 	</script>
 </body>

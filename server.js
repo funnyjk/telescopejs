@@ -25,7 +25,7 @@ app.listen(webPort, function() {
 
 //====================Variables====================
 var clients = {};
-var WEBSOCKET_PORT = 8004;
+var WEBSOCKET_PORT = 8084;
 
 var STREAM_SECRET = 'test',	//process.argv[2],
 	STREAM_MAGIC_BYTES = 'jsmp';
