@@ -25,6 +25,7 @@ app.listen(webPort, function() {
 
 //====================Variables====================
 var clients = {};
+var WEBSOCKET_PORT = 8004;
 
 var STREAM_SECRET = 'test',	//process.argv[2],
 	STREAM_MAGIC_BYTES = 'jsmp';
@@ -125,7 +126,7 @@ function clientTest(id, data) { io.sockets.socket(id).emit('clientTest', data); 
 
 //========Video Functions========
 function videoBroadcast(data) {	//id,data
-	io.sockets.emit(data, {binary:true});
+	socketServer.broadcast(data, {binary:true});
 }
 
 //====================Socket.io====================
@@ -206,6 +207,28 @@ io.sockets.on('connection', function(socket) {
 	});
 });
 //====================HTTP Server for Accepting MPEG Streams====================
-var streamServer = 
+// Websocket Server
+var socketServer = new (require('ws').Server)({port: WEBSOCKET_PORT});
+socketServer.on('connection', function(socket) {
+	// Send magic bytes and video size to the newly connected socket
+	// struct { char magic[4]; unsigned short width, height;}
+	var streamHeader = new Buffer(8);
+	streamHeader.write(STREAM_MAGIC_BYTES);
+	streamHeader.writeUInt16BE(width, 4);
+	streamHeader.writeUInt16BE(height, 6);
+	socket.send(streamHeader, {binary:true});
+
+	console.log( 'New WebSocket Connection ('+socketServer.clients.length+' total)' );
+
+	socket.on('close', function(code, message){
+		console.log( 'Disconnected WebSocket ('+socketServer.clients.length+' total)' );
+	});
+});
+
+socketServer.broadcast = function(data, opts) {
+	for( var i in this.clients ) {
+		this.clients[i].send(data, opts);
+	}
+};
 //====================On Start====================
 on_start();
