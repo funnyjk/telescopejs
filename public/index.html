@@ -70,9 +70,10 @@
 		<div id="telescope-list" class="row">
 			<div class="col-sm-4 col-sm-offset-4">
 				<!--for each telescope-->
-				<select class="styled-select" ng-model="telescope" ng-options="telescope.socketid for telescope in telescopes" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}')">Telescope</select>
+				<select class="styled-select" ng-model="telescope" ng-options="telescope.socketid for telescope in telescopes" name="telescopeRadio" onclick="selectTelescope('{{ telescope.socketid }}')"><option value="">Choose Telescope:</option></select>
 			</div>	
 		</div>
+<br>
 		<h1 class="jquery">Controls</h1>
 			<li class="button button-alt" onclick="direction('north')">North</li>
 			<li class="button button-alt" onclick="direction('south')">South</li>

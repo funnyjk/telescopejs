@@ -18,7 +18,7 @@ app.configure(function(){
 });
 
 //==========Server Ports==========
-var webPort = 80;
+var webPort = 3000;
 app.listen(webPort, function() {
 	console.log("Listening on " + webPort);
 });
