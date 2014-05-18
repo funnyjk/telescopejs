@@ -90,12 +90,13 @@ app.get('/api/clients', function(req, res) {
 		res.json(clients)
 	});
 });
-app.get('/api/video/:secret/:width/:height', function(req, res) {
+app.post('/api/video/:secret/:width/:height', function(req, res) {
 	width = (req.params.width || 320)|0;
 	height = (req.params.height || 240)|0;
 	
 	if(req.params.secret == STREAM_SECRET) {
 		console.log('Stream Connected');
+		console.log(req.params.width);
 		req.on('data', function(data) {
 			videoBroadcast(data);
 		});
