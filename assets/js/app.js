@@ -3,7 +3,7 @@ var urlLink = '107.170.68.139:8080';
 var socket = io.connect(urlLink);
 
 //===Testing===
-var localLink = '192.168.1.18:8080';
+var localLink = '192.168.1.20:8080';
 var socketLocal = io.connect(localLink);
 socketLocal.on('connect', function() {
 	socketLocal.emit('client');
