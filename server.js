@@ -90,7 +90,7 @@ app.get('/api/clients', function(req, res) {
 		res.json(clients)
 	});
 });
-app.get('/api/video/:secret/:width/:height', funtion(req, res) {
+app.get('/api/video/:secret/:width/:height', function(req, res) {
 	width = (req.params.width || 320)|0;
 	height = (req.params.height || 240)|0;
 	
