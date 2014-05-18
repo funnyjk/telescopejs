@@ -31,7 +31,7 @@ var STREAM_SECRET = 'test',	//process.argv[2],
 	STREAM_MAGIC_BYTES = 'jsmp';
 //====Stream====
 var width = 320,
-	hight = 240;
+	height = 240;
 
 //====================Mongoose Configure====================
 mongoose.connect('mongodb://localhost/telescope');
