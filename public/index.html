@@ -16,13 +16,22 @@
 	<script src="js/skel.min.js"></script>
 	<script src="lib/socket.io.js"></script>
 	<script src="js/app.js"></script>
+	<script src="js/jsmpg.js"></script>
 	
 	<noscript>   
 		<link rel="stylesheet" href="css/skel-noscript.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<link rel="stylesheet" href="css/style-desktop.css" />
 		<link rel="stylesheet" href="css/css.css" />
-	</noscript>	
+	</noscript>
+	<style type="text/css">
+		video {
+			display:none;
+		}
+		.imageDump img {
+			width: 75px
+		}
+	</style>
 	
 </head>
 <body>
@@ -60,7 +69,8 @@
 		<div class="row">
 			<div class="8u">
 				<section class="image image-full">
-					<img src="http://placehold.it/720x480">
+				<canvas id="videoCanvas" width="640" height="480"></canvas>
+<!-- 					<img src="http://placehold.it/720x480"> -->
 <!-- 					<object class="image image-full" type="application/x-shockwave-flash" height="480" width="720" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel=funnyjk" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param name="flashvars" value="hostname=www.twitch.tv&channel=funnyjk&auto_play=true&start_volume=0" /></object> -->
 				</section>
 			</div>
@@ -144,6 +154,16 @@
 					</footer>
 				</article>
 </div>
+<script type="text/javascript">
+		var canvas = document.getElementById('videoCanvas');
+		var ctx = canvas.getContext('2d');
+		ctx.fillStyle = '#444';
+		ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
+
+		// Setup the WebSocket connection and start the player
+		var client = new WebSocket('ws://telescopejs.info:8084/');
+		var player = new jsmpeg(client, {canvas:canvas});
+	</script>
 <script>
 							$( ".jquery" ).hover( 
 								function() {
